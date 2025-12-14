@@ -1,11 +1,34 @@
 package renderer
 
 import (
+	"os"
 	"strings"
 
 	"github.com/SCKelemen/layout"
 	"github.com/mattn/go-runewidth"
 )
+
+func init() {
+	// Configure runewidth for ambiguous characters (•, ✓, etc.)
+	// These can be either 1 or 2 columns depending on terminal/locale
+	// Check if we should use East Asian width (2 columns for ambiguous chars)
+
+	lang := os.Getenv("LANG")
+	termProgram := os.Getenv("TERM_PROGRAM")
+
+	// Use wide rendering if:
+	// 1. Locale is East Asian (ja, ko, zh)
+	// 2. Terminal.app (which uses system font that may render these wide)
+	useEastAsianWidth := strings.Contains(lang, "ja_") ||
+		strings.Contains(lang, "ko_") ||
+		strings.Contains(lang, "zh_") ||
+		termProgram == "Apple_Terminal"
+
+	if useEastAsianWidth {
+		runewidth.DefaultCondition = runewidth.NewCondition()
+		runewidth.DefaultCondition.EastAsianWidth = true
+	}
+}
 
 // Cell represents a single character cell in the terminal
 type Cell struct {
