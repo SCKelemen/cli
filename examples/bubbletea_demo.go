@@ -80,7 +80,7 @@ func (m model) View() string {
 	}
 	headerStyle.WithBorder(renderer.RoundedBorder)
 	headerStyled := renderer.NewStyledNode(headerNode, headerStyle)
-	headerStyled.Content = fmt.Sprintf("\n Terminal UI Demo - Responsive Layout\n Size: %dx%d • Using CSS Units!", m.width, m.height)
+	headerStyled.Content = fmt.Sprintf("\n Responsive TUI • %dx%d", m.width, m.height)
 	rootStyled.AddChild(headerStyled)
 
 	// Content area - 75% of viewport with gradient background
@@ -104,20 +104,10 @@ func (m model) View() string {
 	}
 	contentStyle.WithBorder(renderer.RoundedBorder)
 	contentStyled := renderer.NewStyledNode(contentNode, contentStyle)
-	contentStyled.Content = fmt.Sprintf(`
 
-
-   Full Viewport Layout Demo
-
-   Header: Vh(15) = %d rows
-   Content: Vh(75) = %d rows
-   Footer: Vh(10) = %d rows
-
-   Total: 100%% of terminal height
-
-   Try resizing to see proportions adapt!
-
-`, int(float64(m.height)*0.15), int(float64(m.height)*0.75), int(float64(m.height)*0.10))
+	// Simpler content that fits in small viewports
+	contentStyled.Content = fmt.Sprintf("\n\n %dx%d • Vh(%d/%d/%d)\n Try resizing!",
+		m.width, m.height, 15, 75, 10)
 	rootStyled.AddChild(contentStyled)
 
 	// Footer - 10% of viewport
@@ -133,7 +123,7 @@ func (m model) View() string {
 		Foreground: &gray,
 	}
 	footerStyled := renderer.NewStyledNode(footerNode, footerStyle)
-	footerStyled.Content = "\n Press 'q' or ESC to quit • Resize terminal to see responsive layout"
+	footerStyled.Content = " Press 'q' to quit • Resize window"
 	rootStyled.AddChild(footerStyled)
 
 	// Layout and render with context
