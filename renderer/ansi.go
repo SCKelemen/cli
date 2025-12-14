@@ -160,48 +160,46 @@ func (r *ANSIRenderer) renderColor(c *color.Color, foreground bool) string {
 
 // rgbToANSI16 converts RGB to the closest 16-color ANSI code
 func rgbToANSI16(r, g, b int) int {
-	// Calculate brightness
-	brightness := (r + g + b) / 3
-
-	// Determine base color based on dominant channel
-	if r > g && r > b {
-		if brightness > 128 {
-			return 91 // Bright red
-		}
-		return 31 // Red
-	} else if g > r && g > b {
-		if brightness > 128 {
-			return 92 // Bright green
-		}
-		return 32 // Green
-	} else if b > r && b > g {
-		if brightness > 128 {
-			return 94 // Bright blue
-		}
-		return 34 // Blue
-	} else if r > 128 && g > 128 && b < 100 {
-		if brightness > 180 {
-			return 93 // Bright yellow
-		}
-		return 33 // Yellow
-	} else if r > 128 && b > 128 && g < 100 {
-		if brightness > 180 {
-			return 95 // Bright magenta
-		}
-		return 35 // Magenta
-	} else if g > 128 && b > 128 && r < 100 {
-		if brightness > 180 {
-			return 96 // Bright cyan
-		}
-		return 36 // Cyan
-	} else if brightness < 64 {
-		return 30 // Black
-	} else if brightness > 192 {
-		return 97 // Bright white
-	} else if brightness > 128 {
-		return 37 // White
+	// Define the 16 ANSI colors in RGB
+	ansi16Colors := []struct {
+		code int
+		r, g, b int
+	}{
+		{30, 0, 0, 0},         // Black
+		{31, 170, 0, 0},       // Red
+		{32, 0, 170, 0},       // Green
+		{33, 170, 85, 0},      // Yellow
+		{34, 0, 0, 170},       // Blue
+		{35, 170, 0, 170},     // Magenta
+		{36, 0, 170, 170},     // Cyan
+		{37, 170, 170, 170},   // White
+		{90, 85, 85, 85},      // Bright Black (Gray)
+		{91, 255, 85, 85},     // Bright Red
+		{92, 85, 255, 85},     // Bright Green
+		{93, 255, 255, 85},    // Bright Yellow
+		{94, 85, 85, 255},     // Bright Blue
+		{95, 255, 85, 255},    // Bright Magenta
+		{96, 85, 255, 255},    // Bright Cyan
+		{97, 255, 255, 255},   // Bright White
 	}
-	return 90 // Bright black (gray)
+
+	// Find the closest color using Euclidean distance
+	minDist := 1000000
+	closestCode := 37
+
+	for _, c := range ansi16Colors {
+		dr := r - c.r
+		dg := g - c.g
+		db := b - c.b
+		dist := dr*dr + dg*dg + db*db
+
+		if dist < minDist {
+			minDist = dist
+			closestCode = c.code
+		}
+	}
+
+	return closestCode
 }
 
 // rgbToANSI256 converts RGB to the closest 256-color palette index
