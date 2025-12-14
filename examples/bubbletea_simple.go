@@ -61,12 +61,12 @@ func (m simpleModel) View() string {
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	// Header - 10% of viewport height
+	// Header - 15% of viewport height
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
 			Width:   layout.Vw(100),
-			Height:  layout.Vh(10),
+			Height:  layout.Vh(15),
 		},
 	}
 	purple, _ := color.ParseColor("#7D56F4")
@@ -80,13 +80,12 @@ func (m simpleModel) View() string {
 	headerStyled.Content = fmt.Sprintf("\n Responsive TUI Demo\n %dx%d • CSS Units", m.width, m.height)
 	rootStyled.AddChild(headerStyled)
 
-	// Content area - 80% of viewport height with gradient background
+	// Content area - 75% of viewport height with gradient background
 	contentNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
 			Width:   layout.Vw(100),
-			Height:  layout.Vh(80),
-			Margin:  layout.Spacing{Top: layout.Vh(1), Bottom: layout.Vh(1)},
+			Height:  layout.Vh(75),
 		},
 	}
 
@@ -111,7 +110,7 @@ func (m simpleModel) View() string {
    Viewport Units:
    • Width: Vw(100) = %d columns
    • Height: Vh(100) = %d rows
-   • This content area: Vh(80)
+   • This content area: Vh(75)
 
    Text Units:
    • Ch(n) = character widths
@@ -121,12 +120,12 @@ func (m simpleModel) View() string {
 `, m.width, m.height)
 	rootStyled.AddChild(contentStyled)
 
-	// Footer - 9% of viewport height
+	// Footer - 10% of viewport height
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
 			Width:   layout.Vw(100),
-			Height:  layout.Vh(9),
+			Height:  layout.Vh(10),
 		},
 	}
 	gray, _ := color.ParseColor("#888888")

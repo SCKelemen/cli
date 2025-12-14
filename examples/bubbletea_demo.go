@@ -64,12 +64,12 @@ func (m model) View() string {
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	// Header - 12% of viewport height
+	// Header - 15% of viewport height
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
 			Width:   layout.Vw(100),
-			Height:  layout.Vh(12),
+			Height:  layout.Vh(15),
 		},
 	}
 	headerColor, _ := color.ParseColor("#7D56F4")
@@ -83,14 +83,13 @@ func (m model) View() string {
 	headerStyled.Content = fmt.Sprintf("\n Terminal UI Demo - Responsive Layout\n Size: %dx%d • Using CSS Units!", m.width, m.height)
 	rootStyled.AddChild(headerStyled)
 
-	// Content area - 78% of viewport with gradient background
+	// Content area - 75% of viewport with gradient background
 	// Create a single panel with gradient background color
 	contentNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
 			Width:   layout.Vw(100),
-			Height:  layout.Vh(78),
-			Margin:  layout.Spacing{Top: layout.Vh(2), Bottom: layout.Vh(2)},
+			Height:  layout.Vh(75),
 		},
 	}
 
@@ -110,23 +109,23 @@ func (m model) View() string {
 
    Full Viewport Layout Demo
 
-   Header: Vh(12) = %d rows
-   Content: Vh(78) = %d rows
-   Footer: Vh(8) = %d rows
+   Header: Vh(15) = %d rows
+   Content: Vh(75) = %d rows
+   Footer: Vh(10) = %d rows
 
    Total: 100%% of terminal height
 
    Try resizing to see proportions adapt!
 
-`, int(float64(m.height)*0.12), int(float64(m.height)*0.78), int(float64(m.height)*0.08))
+`, int(float64(m.height)*0.15), int(float64(m.height)*0.75), int(float64(m.height)*0.10))
 	rootStyled.AddChild(contentStyled)
 
-	// Footer - 8% of viewport
+	// Footer - 10% of viewport
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
 			Width:   layout.Vw(100),
-			Height:  layout.Vh(8),
+			Height:  layout.Vh(10),
 		},
 	}
 	gray, _ := color.ParseColor("#888888")
