@@ -1,0 +1,177 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"time"
+
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
+	"github.com/SCKelemen/cli/renderer"
+)
+
+type tickMsg time.Time
+
+type dashboardModel struct {
+	width   int
+	height  int
+	ready   bool
+	counter int
+}
+
+func initialDashboardModel() dashboardModel {
+	return dashboardModel{}
+}
+
+func (m dashboardModel) Init() tea.Cmd {
+	return tickCmd()
+}
+
+func tickCmd() tea.Cmd {
+	return tea.Tick(time.Second, func(t time.Time) tea.Msg {
+		return tickMsg(t)
+	})
+}
+
+func (m dashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "q", "ctrl+c", "esc":
+			return m, tea.Quit
+		}
+
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		m.height = msg.Height
+		m.ready = true
+		return m, nil
+
+	case tickMsg:
+		m.counter++
+		return m, tickCmd()
+	}
+
+	return m, nil
+}
+
+func (m dashboardModel) View() string {
+	if !m.ready {
+		return "Initializing..."
+	}
+
+	screen := renderer.NewScreen(m.width, m.height)
+
+	// Create responsive grid layout
+	root := &layout.Node{
+		Style: layout.Style{
+			Display:             layout.DisplayGrid,
+			Width:               float64(m.width),
+			Height:              float64(m.height),
+			GridTemplateColumns: []layout.GridTrack{layout.FractionTrack(1), layout.FractionTrack(1)},
+			GridTemplateRows:    []layout.GridTrack{layout.FixedTrack(3), layout.FractionTrack(1), layout.FractionTrack(1)},
+			GridGap:             1,
+		},
+	}
+	rootStyled := renderer.NewStyledNode(root, nil)
+
+	// Header spanning both columns
+	headerNode := &layout.Node{
+		Style: layout.Style{
+			Display:         layout.DisplayBlock,
+			GridColumnStart: 1,
+			GridColumnEnd:   3, // Span columns 1-2
+		},
+	}
+	purple, _ := color.ParseColor("#7D56F4")
+	white, _ := color.ParseColor("#FAFAFA")
+	headerStyle := &renderer.Style{
+		Foreground:  &white,
+		BorderColor: &purple,
+	}
+	headerStyle.WithBorder(renderer.RoundedBorder)
+	headerStyled := renderer.NewStyledNode(headerNode, headerStyle)
+	headerStyled.Content = fmt.Sprintf(" Responsive Dashboard • %dx%d • %ds", m.width, m.height, m.counter)
+	rootStyled.AddChild(headerStyled)
+
+	// Left panel - Color gradient
+	leftNode := &layout.Node{
+		Style: layout.Style{
+			Display: layout.DisplayBlock,
+		},
+	}
+	cyan, _ := color.ParseColor("#00D7FF")
+	leftStyle := &renderer.Style{
+		Foreground:  &white,
+		BorderColor: &cyan,
+	}
+	leftStyle.WithBorder(renderer.RoundedBorder)
+	leftStyled := renderer.NewStyledNode(leftNode, leftStyle)
+	leftStyled.Content = fmt.Sprintf("\n Gradient Panel\n\n Hue: %d°", (m.counter*10)%360)
+	rootStyled.AddChild(leftStyled)
+
+	// Right panel - Stats
+	rightNode := &layout.Node{
+		Style: layout.Style{
+			Display: layout.DisplayBlock,
+		},
+	}
+	green, _ := color.ParseColor("#00FF87")
+	rightStyle := &renderer.Style{
+		Foreground:  &white,
+		BorderColor: &green,
+	}
+	rightStyle.WithBorder(renderer.RoundedBorder)
+	rightStyled := renderer.NewStyledNode(rightNode, rightStyle)
+	rightStyled.Content = fmt.Sprintf("\n Statistics\n\n Width:  %d\n Height: %d\n Cells:  %d", m.width, m.height, m.width*m.height)
+	rootStyled.AddChild(rightStyled)
+
+	// Bottom left - Progress
+	bottomLeftNode := &layout.Node{
+		Style: layout.Style{
+			Display: layout.DisplayBlock,
+		},
+	}
+	yellow, _ := color.ParseColor("#FFD700")
+	bottomLeftStyle := &renderer.Style{
+		Foreground:  &white,
+		BorderColor: &yellow,
+	}
+	bottomLeftStyle.WithBorder(renderer.RoundedBorder)
+	bottomLeftStyled := renderer.NewStyledNode(bottomLeftNode, bottomLeftStyle)
+	progress := (m.counter % 10) * 10
+	bottomLeftStyled.Content = fmt.Sprintf("\n Progress: %d%%", progress)
+	rootStyled.AddChild(bottomLeftStyled)
+
+	// Bottom right - Controls
+	bottomRightNode := &layout.Node{
+		Style: layout.Style{
+			Display: layout.DisplayBlock,
+		},
+	}
+	red, _ := color.ParseColor("#FF5555")
+	bottomRightStyle := &renderer.Style{
+		Foreground:  &white,
+		BorderColor: &red,
+	}
+	bottomRightStyle.WithBorder(renderer.RoundedBorder)
+	bottomRightStyled := renderer.NewStyledNode(bottomRightNode, bottomRightStyle)
+	bottomRightStyled.Content = "\n Controls\n\n q/ESC - Quit\n Resize terminal"
+	rootStyled.AddChild(bottomRightStyled)
+
+	// Layout and render
+	constraints := layout.Tight(float64(m.width), float64(m.height))
+	layout.Layout(root, constraints)
+	screen.Render(rootStyled)
+
+	return screen.String()
+}
+
+func main() {
+	p := tea.NewProgram(initialDashboardModel(), tea.WithAltScreen(), tea.WithMouseCellMotion())
+	if _, err := p.Run(); err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+}

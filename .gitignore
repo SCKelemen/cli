@@ -15,3 +15,5 @@ examples/oklch_rgb_debug
 examples/border_debug
 examples/boxdraw_debug
 examples/width_visual_debug
+examples/bubbletea_demo
+examples/bubbletea_dashboard
