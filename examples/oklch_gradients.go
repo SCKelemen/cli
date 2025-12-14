@@ -152,7 +152,8 @@ func printColorSwatches() {
 		{"Magenta", "oklch(0.60 0.25 330)"},
 	}
 
-	width := 70
+	// 8 swatches * 9 width = 72 columns total
+	width := 72
 	screen := renderer.NewScreen(width, 4)
 
 	root := &layout.Node{
@@ -165,7 +166,7 @@ func printColorSwatches() {
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	swatchWidth := 8
+	swatchWidth := 9  // Increased from 8 to fit longer names like "Orange"
 
 	for _, swatch := range swatches {
 		c, _ := color.ParseColor(swatch.oklch)
@@ -176,7 +177,7 @@ func printColorSwatches() {
 				Display: layout.DisplayBlock,
 				Width:   float64(swatchWidth),
 				Height:  4,
-				Margin:  layout.Spacing{Top: 0, Right: 1, Bottom: 0, Left: 0},
+				Margin:  layout.Spacing{Top: 0, Right: 0, Bottom: 0, Left: 0},  // No margins, boxes are adjacent
 			},
 		}
 		swatchStyle := &renderer.Style{

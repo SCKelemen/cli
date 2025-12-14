@@ -8,26 +8,47 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
+var useWideAmbiguous bool
+
 func init() {
 	// Configure runewidth for ambiguous characters (•, ✓, etc.)
 	// These can be either 1 or 2 columns depending on terminal/locale
-	// Check if we should use East Asian width (2 columns for ambiguous chars)
-
 	lang := os.Getenv("LANG")
 	termProgram := os.Getenv("TERM_PROGRAM")
 
 	// Use wide rendering if:
 	// 1. Locale is East Asian (ja, ko, zh)
 	// 2. Terminal.app (which uses system font that may render these wide)
-	useEastAsianWidth := strings.Contains(lang, "ja_") ||
+	useWideAmbiguous = strings.Contains(lang, "ja_") ||
 		strings.Contains(lang, "ko_") ||
 		strings.Contains(lang, "zh_") ||
 		termProgram == "Apple_Terminal"
 
-	if useEastAsianWidth {
-		runewidth.DefaultCondition = runewidth.NewCondition()
-		runewidth.DefaultCondition.EastAsianWidth = true
+	if useWideAmbiguous {
+		// Set environment variable for runewidth library
+		os.Setenv("RUNEWIDTH_EASTASIAN", "1")
 	}
+}
+
+// getRuneWidth returns the display width of a rune, accounting for ambiguous characters
+func getRuneWidth(r rune) int {
+	w := runewidth.RuneWidth(r)
+
+	// If runewidth reports 1 but we should use wide ambiguous, check for ambiguous chars
+	if w == 1 && useWideAmbiguous {
+		// Common ambiguous characters that render as 2 columns in many terminals
+		switch r {
+		case '•', '·', '※', '…', '‥', '℃', '℉', '°',
+			'✓', '✔', '✕', '✖', '✗', '✘',
+			'→', '←', '↑', '↓', '⇒', '⇐', '⇑', '⇓',
+			'■', '□', '▪', '▫', '▲', '△', '▼', '▽',
+			'◆', '◇', '○', '◎', '●', '◐', '◑',
+			'★', '☆':
+			return 2
+		}
+	}
+
+	return w
 }
 
 // Cell represents a single character cell in the terminal
@@ -255,7 +276,7 @@ func (s *Screen) renderText(x, y, w, h int, text string, style *Style) {
 
 		col := x
 		for _, char := range line {
-			charWidth := runewidth.RuneWidth(char)
+			charWidth := getRuneWidth(char)
 
 			// Check if character fits in the remaining space
 			if col+charWidth > x+w || col >= s.Width {
