@@ -202,15 +202,15 @@ func renderColorInfo() string {
 ┌────────────────────────────────────────────────────────────────────────┐
 │ About OKLCH Colors                                                     │
 ├────────────────────────────────────────────────────────────────────────┤
-│ • L (Lightness): 0.0 (black) to 1.0 (white)                          │
-│ • C (Chroma): 0.0 (gray) to ~0.4 (vivid)                             │
-│ • H (Hue): 0° to 360° (color wheel)                                  │
+│ • L (Lightness): 0.0 (black) to 1.0 (white)                         │
+│ • C (Chroma): 0.0 (gray) to ~0.4 (vivid)                            │
+│ • H (Hue): 0° to 360° (color wheel)                                 │
 │                                                                        │
 │ Benefits:                                                              │
-│ ✓ Perceptually uniform - equal changes look equal to the human eye   │
-│ ✓ Smooth gradients - no muddy middle colors like RGB                 │
-│ ✓ Predictable lightness - same L value = same perceived brightness   │
-│ ✓ Accessible color systems - easier to maintain contrast ratios      │
+│ ✓ Perceptually uniform - equal changes look equal to the human eye  │
+│ ✓ Smooth gradients - no muddy middle colors like RGB                │
+│ ✓ Predictable lightness - same L value = same perceived brightness  │
+│ ✓ Accessible color systems - easier to maintain contrast ratios     │
 └────────────────────────────────────────────────────────────────────────┘
 `
 }
