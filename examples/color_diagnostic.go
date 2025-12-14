@@ -11,6 +11,7 @@ func main() {
 	fmt.Println("=== Terminal Color Detection ===")
 	fmt.Printf("TERM=%s\n", os.Getenv("TERM"))
 	fmt.Printf("COLORTERM=%s\n", os.Getenv("COLORTERM"))
+	fmt.Printf("TERM_PROGRAM=%s\n", os.Getenv("TERM_PROGRAM"))
 
 	caps := renderer.DetectCapabilities()
 	fmt.Printf("Detected mode: %s\n", caps.ColorMode)

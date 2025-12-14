@@ -46,6 +46,14 @@ func DetectCapabilities() *TerminalCapabilities {
 }
 
 func detectColorMode() ColorMode {
+	// Check TERM_PROGRAM for specific terminal applications
+	termProgram := os.Getenv("TERM_PROGRAM")
+
+	// Apple's Terminal.app claims true color support but only supports 16 colors
+	if termProgram == "Apple_Terminal" {
+		return ColorMode16
+	}
+
 	// Check COLORTERM environment variable (most reliable for true color)
 	colorTerm := os.Getenv("COLORTERM")
 	if colorTerm == "truecolor" || colorTerm == "24bit" {
