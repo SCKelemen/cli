@@ -232,14 +232,24 @@ func (s *Screen) renderText(x, y, w, h int, text string, style *Style) {
 
 		col := x
 		for _, char := range line {
-			if col >= x+w || col >= s.Width {
+			charWidth := runewidth.RuneWidth(char)
+
+			// Check if character fits in the remaining space
+			if col+charWidth > x+w || col >= s.Width {
 				break
 			}
+
 			if col >= 0 {
 				s.SetCell(col, row, char, style)
+
+				// For wide characters (width=2), fill the second column with a space
+				// to prevent other content from overlapping
+				if charWidth == 2 && col+1 < s.Width {
+					s.SetCell(col+1, row, ' ', style)
+				}
 			}
-			// Account for character display width (some chars take 2 columns)
-			col += runewidth.RuneWidth(char)
+
+			col += charWidth
 		}
 	}
 }

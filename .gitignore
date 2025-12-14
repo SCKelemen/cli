@@ -12,3 +12,4 @@ examples/ansi_diagnostic
 examples/color_diagnostic
 examples/color_debug
 examples/oklch_rgb_debug
+examples/border_debug
