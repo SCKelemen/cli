@@ -1,0 +1,207 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
+	"github.com/SCKelemen/cli/renderer"
+)
+
+func main() {
+	fmt.Println("╔═══════════════════════════════════════════════════════════════════════════╗")
+	fmt.Println("║               OKLCH Color Gradients - Terminal Showcase                  ║")
+	fmt.Println("╚═══════════════════════════════════════════════════════════════════════════╝\n")
+
+	// Rainbow Hue Gradient
+	fmt.Println("1. Hue Rotation (0° → 360°) - Full Color Wheel:")
+	printGradient(70, func(t float64) string {
+		hue := t * 360
+		return fmt.Sprintf("oklch(0.65 0.2 %.0f)", hue)
+	})
+	fmt.Println()
+
+	// Lightness Gradient
+	fmt.Println("2. Lightness Variation (Dark → Light):")
+	printGradient(70, func(t float64) string {
+		lightness := 0.2 + (t * 0.7)
+		return fmt.Sprintf("oklch(%.2f 0.15 270)", lightness)
+	})
+	fmt.Println()
+
+	// Chroma Gradient
+	fmt.Println("3. Chroma/Saturation (Gray → Vivid):")
+	printGradient(70, func(t float64) string {
+		chroma := t * 0.3
+		return fmt.Sprintf("oklch(0.6 %.2f 180)", chroma)
+	})
+	fmt.Println()
+
+	// Blue to Red
+	fmt.Println("4. Blue → Purple → Red (Smooth OKLCH Transition):")
+	printGradient(70, func(t float64) string {
+		hue := 240 + (t * 150)
+		if hue > 360 {
+			hue -= 360
+		}
+		return fmt.Sprintf("oklch(0.6 0.2 %.0f)", hue)
+	})
+	fmt.Println()
+
+	// Sunset Gradient
+	fmt.Println("5. Sunset Gradient (Purple → Pink → Orange → Yellow):")
+	printGradient(70, func(t float64) string {
+		if t < 0.33 {
+			hue := 280 + (t/0.33)*40
+			return fmt.Sprintf("oklch(0.5 0.25 %.0f)", hue)
+		} else if t < 0.66 {
+			hue := 320 + ((t-0.33)/0.33)*30
+			return fmt.Sprintf("oklch(0.65 0.2 %.0f)", hue)
+		} else {
+			hue := 50 + ((t-0.66)/0.34)*30
+			return fmt.Sprintf("oklch(0.75 0.18 %.0f)", hue)
+		}
+	})
+	fmt.Println()
+
+	// Ocean Gradient
+	fmt.Println("6. Ocean Gradient (Deep Blue → Cyan → Teal):")
+	printGradient(70, func(t float64) string {
+		hue := 220 + (t * 50)
+		lightness := 0.4 + (t * 0.3)
+		return fmt.Sprintf("oklch(%.2f 0.15 %.0f)", lightness, hue)
+	})
+	fmt.Println()
+
+	// Warm to Cool
+	fmt.Println("7. Warm → Cool (Red → Orange → Green → Blue):")
+	printGradient(70, func(t float64) string {
+		hue := 30 + (t * 210)
+		return fmt.Sprintf("oklch(0.6 0.18 %.0f)", hue)
+	})
+	fmt.Println()
+
+	// Color Swatches
+	fmt.Println("\n8. Color Palette (Perceptually Uniform):")
+	printColorSwatches()
+
+	fmt.Println("\n" + renderColorInfo())
+}
+
+func printGradient(width int, colorFunc func(float64) string) {
+	screen := renderer.NewScreen(width, 2)
+
+	root := &layout.Node{
+		Style: layout.Style{
+			Display:       layout.DisplayFlex,
+			FlexDirection: layout.FlexDirectionRow,
+			Width:         float64(width),
+			Height:        2,
+		},
+	}
+	rootStyled := renderer.NewStyledNode(root, nil)
+
+	// Create gradient cells
+	for i := 0; i < width; i++ {
+		t := float64(i) / float64(width-1)
+		colorStr := colorFunc(t)
+		c, _ := color.ParseColor(colorStr)
+
+		cellNode := &layout.Node{
+			Style: layout.Style{
+				Display: layout.DisplayBlock,
+				Width:   1,
+				Height:  2,
+			},
+		}
+		cellStyle := &renderer.Style{
+			Background: &c,
+		}
+		cellStyled := renderer.NewStyledNode(cellNode, cellStyle)
+		cellStyled.Content = " "
+		rootStyled.AddChild(cellStyled)
+	}
+
+	constraints := layout.Tight(float64(width), 2)
+	layout.Layout(root, constraints)
+	screen.Render(rootStyled)
+	fmt.Print(screen.String())
+}
+
+func printColorSwatches() {
+	swatches := []struct {
+		name  string
+		oklch string
+	}{
+		{"Red", "oklch(0.55 0.22 30)"},
+		{"Orange", "oklch(0.65 0.20 60)"},
+		{"Yellow", "oklch(0.80 0.15 90)"},
+		{"Green", "oklch(0.60 0.18 140)"},
+		{"Cyan", "oklch(0.70 0.15 200)"},
+		{"Blue", "oklch(0.50 0.20 260)"},
+		{"Purple", "oklch(0.55 0.20 300)"},
+		{"Magenta", "oklch(0.60 0.25 330)"},
+	}
+
+	width := 70
+	screen := renderer.NewScreen(width, 4)
+
+	root := &layout.Node{
+		Style: layout.Style{
+			Display:       layout.DisplayFlex,
+			FlexDirection: layout.FlexDirectionRow,
+			Width:         float64(width),
+			Height:        4,
+		},
+	}
+	rootStyled := renderer.NewStyledNode(root, nil)
+
+	swatchWidth := 8
+
+	for _, swatch := range swatches {
+		c, _ := color.ParseColor(swatch.oklch)
+		fgWhite, _ := color.ParseColor("#FFFFFF")
+
+		swatchNode := &layout.Node{
+			Style: layout.Style{
+				Display: layout.DisplayBlock,
+				Width:   float64(swatchWidth),
+				Height:  4,
+				Margin:  layout.Spacing{Top: 0, Right: 1, Bottom: 0, Left: 0},
+			},
+		}
+		swatchStyle := &renderer.Style{
+			Background:  &c,
+			Foreground:  &fgWhite,
+			Bold:        true,
+			BorderColor: &c,
+		}
+		swatchStyle.WithBorder(renderer.RoundedBorder)
+		swatchStyled := renderer.NewStyledNode(swatchNode, swatchStyle)
+		swatchStyled.Content = fmt.Sprintf("\n %s", swatch.name)
+		rootStyled.AddChild(swatchStyled)
+	}
+
+	constraints := layout.Tight(float64(width), 4)
+	layout.Layout(root, constraints)
+	screen.Render(rootStyled)
+	fmt.Print(screen.String())
+}
+
+func renderColorInfo() string {
+	return `
+┌────────────────────────────────────────────────────────────────────────┐
+│ About OKLCH Colors                                                     │
+├────────────────────────────────────────────────────────────────────────┤
+│ • L (Lightness): 0.0 (black) to 1.0 (white)                          │
+│ • C (Chroma): 0.0 (gray) to ~0.4 (vivid)                             │
+│ • H (Hue): 0° to 360° (color wheel)                                  │
+│                                                                        │
+│ Benefits:                                                              │
+│ ✓ Perceptually uniform - equal changes look equal to the human eye   │
+│ ✓ Smooth gradients - no muddy middle colors like RGB                 │
+│ ✓ Predictable lightness - same L value = same perceived brightness   │
+│ ✓ Accessible color systems - easier to maintain contrast ratios      │
+└────────────────────────────────────────────────────────────────────────┘
+`
+}
