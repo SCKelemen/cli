@@ -73,7 +73,7 @@ func (m dashboardModel) View() string {
 			Width:               layout.Vw(100),
 			Height:              layout.Vh(100),
 			GridTemplateColumns: []layout.GridTrack{layout.FractionTrack(1), layout.FractionTrack(1)},
-			GridTemplateRows:    []layout.GridTrack{layout.FixedTrack(layout.Ch(3)), layout.FractionTrack(1), layout.FractionTrack(1)},
+			GridTemplateRows:    []layout.GridTrack{layout.FixedTrack(layout.Vh(15)), layout.FractionTrack(1), layout.FractionTrack(1)},
 			GridGap:             layout.Ch(1), // 1 character spacing between grid cells
 		},
 	}
