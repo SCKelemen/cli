@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/SCKelemen/layout"
+	"github.com/mattn/go-runewidth"
 )
 
 // Cell represents a single character cell in the terminal
@@ -237,7 +238,8 @@ func (s *Screen) renderText(x, y, w, h int, text string, style *Style) {
 			if col >= 0 {
 				s.SetCell(col, row, char, style)
 			}
-			col++
+			// Account for character display width (some chars take 2 columns)
+			col += runewidth.RuneWidth(char)
 		}
 	}
 }

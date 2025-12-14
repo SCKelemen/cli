@@ -8,3 +8,5 @@ examples/animated
 examples/animtest
 examples/direct_gradient
 examples/oklch_gradients
+examples/ansi_diagnostic
+examples/color_diagnostic
