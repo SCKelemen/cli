@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
@@ -9,6 +11,9 @@ import (
 )
 
 func main() {
+	// Clear screen
+	fmt.Print("\033[2J\033[H")
+
 	// Detect terminal capabilities
 	caps := renderer.DetectCapabilities()
 
@@ -57,6 +62,10 @@ func main() {
 		fmt.Println("   For even better colors, try: iTerm2, Alacritty, or Kitty")
 		fmt.Println("   Or set: export COLORTERM=truecolor")
 	}
+
+	// Wait for user
+	fmt.Println("\nPress Enter to exit...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
 
 func showGradient(mode renderer.ColorMode, width int) {

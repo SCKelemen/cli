@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
@@ -9,6 +11,9 @@ import (
 )
 
 func main() {
+	// Clear screen
+	fmt.Print("\033[2J\033[H")
+
 	fmt.Println("╔═══════════════════════════════════════════════════════════════════════════╗")
 	fmt.Println("║               OKLCH Color Gradients - Terminal Showcase                  ║")
 	fmt.Println("╚═══════════════════════════════════════════════════════════════════════════╝\n")
@@ -86,6 +91,10 @@ func main() {
 	printColorSwatches()
 
 	fmt.Println("\n" + renderColorInfo())
+
+	// Wait for user
+	fmt.Println("\nPress Enter to exit...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
 
 func printGradient(width int, colorFunc func(float64) string) {

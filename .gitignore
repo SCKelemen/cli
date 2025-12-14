@@ -6,3 +6,4 @@ examples/grid_demo
 examples/color_fallback
 examples/animated
 examples/animtest
+examples/direct_gradient
