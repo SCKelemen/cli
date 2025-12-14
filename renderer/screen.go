@@ -56,6 +56,11 @@ func (s *Screen) Resize(width, height int) {
 	s.Previous = makeBuffer(width, height)
 }
 
+// SetColorMode sets the color mode for rendering
+func (s *Screen) SetColorMode(mode ColorMode) {
+	s.renderer = NewANSIRendererWithMode(mode)
+}
+
 // Clear resets all cells to empty
 func (s *Screen) Clear() {
 	for y := 0; y < s.Height; y++ {
