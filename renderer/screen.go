@@ -274,6 +274,36 @@ func (s *Screen) renderText(x, y, w, h int, text string, style *Style) {
 			continue
 		}
 
+		// Check if we need to apply ellipsis for this line
+		useEllipsis := style != nil && style.TextOverflow == TextOverflowEllipsis
+
+		// Calculate line width and check for overflow
+		lineWidth := 0
+		runes := []rune(line)
+		for _, r := range runes {
+			lineWidth += getRuneWidth(r)
+		}
+
+		// If line overflows and ellipsis is enabled, truncate
+		if useEllipsis && lineWidth > w {
+			ellipsisWidth := getRuneWidth('…')
+			truncated := []rune{}
+			currentWidth := 0
+
+			for _, r := range runes {
+				charWidth := getRuneWidth(r)
+				if currentWidth+charWidth+ellipsisWidth > w {
+					break
+				}
+				truncated = append(truncated, r)
+				currentWidth += charWidth
+			}
+
+			truncated = append(truncated, '…')
+			line = string(truncated)
+		}
+
+		// Render the line
 		col := x
 		for _, char := range line {
 			charWidth := getRuneWidth(char)

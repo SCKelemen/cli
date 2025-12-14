@@ -2,6 +2,14 @@ package renderer
 
 import "github.com/SCKelemen/color"
 
+// TextOverflow defines how text should be handled when it overflows
+type TextOverflow int
+
+const (
+	TextOverflowClip TextOverflow = iota // Clip text at boundary
+	TextOverflowEllipsis                 // Show ellipsis (…) for overflow
+)
+
 // Style defines visual attributes without sizing properties.
 // Sizing and layout are handled by the layout engine.
 type Style struct {
@@ -17,6 +25,9 @@ type Style struct {
 	Dim           bool
 	Blink         bool
 	Reverse       bool
+
+	// Text overflow handling
+	TextOverflow TextOverflow
 
 	// Borders
 	Border      *BorderStyle
@@ -133,5 +144,11 @@ func (s *Style) WithBorder(chars BorderChars) *Style {
 // WithBorderColor sets the border color
 func (s *Style) WithBorderColor(c *color.Color) *Style {
 	s.BorderColor = c
+	return s
+}
+
+// WithTextOverflow sets the text overflow behavior
+func (s *Style) WithTextOverflow(overflow TextOverflow) *Style {
+	s.TextOverflow = overflow
 	return s
 }

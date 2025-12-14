@@ -64,12 +64,13 @@ func (m model) View() string {
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	// Header - 15% of viewport height
+	// Header - 15% of viewport height with minimum
 	headerNode := &layout.Node{
 		Style: layout.Style{
-			Display: layout.DisplayBlock,
-			Width:   layout.Vw(100),
-			Height:  layout.Vh(15),
+			Display:   layout.DisplayBlock,
+			Width:     layout.Vw(100),
+			Height:    layout.Vh(15),
+			MinHeight: layout.Ch(3), // Minimum 3 character heights
 		},
 	}
 	headerColor, _ := color.ParseColor("#7D56F4")
