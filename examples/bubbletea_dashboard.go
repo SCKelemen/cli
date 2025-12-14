@@ -63,25 +63,29 @@ func (m dashboardModel) View() string {
 
 	screen := renderer.NewScreen(m.width, m.height)
 
-	// Create responsive grid layout
+	// Create layout context
+	ctx := layout.NewLayoutContext(float64(m.width), float64(m.height), 16)
+
+	// Create responsive grid layout with viewport units
 	root := &layout.Node{
 		Style: layout.Style{
 			Display:             layout.DisplayGrid,
-			Width:               float64(m.width),
-			Height:              float64(m.height),
+			Width:               layout.Vw(100),
+			Height:              layout.Vh(100),
 			GridTemplateColumns: []layout.GridTrack{layout.FractionTrack(1), layout.FractionTrack(1)},
-			GridTemplateRows:    []layout.GridTrack{layout.FixedTrack(3), layout.FractionTrack(1), layout.FractionTrack(1)},
-			GridGap:             1,
+			GridTemplateRows:    []layout.GridTrack{layout.FixedTrack(layout.Ch(3)), layout.FractionTrack(1), layout.FractionTrack(1)},
+			GridGap:             layout.Ch(1), // 1 character spacing between grid cells
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	// Header spanning both columns
+	// Header spanning both columns with character-based padding
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display:         layout.DisplayBlock,
 			GridColumnStart: 1,
 			GridColumnEnd:   3, // Span columns 1-2
+			Padding:         layout.Uniform(layout.Ch(0.5)),
 		},
 	}
 	purple, _ := color.ParseColor("#7D56F4")
@@ -92,7 +96,7 @@ func (m dashboardModel) View() string {
 	}
 	headerStyle.WithBorder(renderer.RoundedBorder)
 	headerStyled := renderer.NewStyledNode(headerNode, headerStyle)
-	headerStyled.Content = fmt.Sprintf(" Responsive Dashboard • %dx%d • %ds", m.width, m.height, m.counter)
+	headerStyled.Content = fmt.Sprintf(" Dashboard (CSS Units!) • %dx%d • %ds", m.width, m.height, m.counter)
 	rootStyled.AddChild(headerStyled)
 
 	// Left panel - Color gradient
@@ -160,9 +164,9 @@ func (m dashboardModel) View() string {
 	bottomRightStyled.Content = "\n Controls\n\n q/ESC - Quit\n Resize terminal"
 	rootStyled.AddChild(bottomRightStyled)
 
-	// Layout and render
+	// Layout and render with context
 	constraints := layout.Tight(float64(m.width), float64(m.height))
-	layout.Layout(root, constraints)
+	layout.Layout(root, constraints, ctx)
 	screen.Render(rootStyled)
 
 	return screen.String()

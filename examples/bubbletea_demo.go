@@ -50,23 +50,26 @@ func (m model) View() string {
 	// Create screen buffer matching terminal size
 	screen := renderer.NewScreen(m.width, m.height)
 
-	// Create root layout node
+	// Create layout context with viewport dimensions and root font size
+	ctx := layout.NewLayoutContext(float64(m.width), float64(m.height), 16)
+
+	// Create root layout node using viewport units
 	root := &layout.Node{
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(m.width),
-			Height:        float64(m.height),
+			Width:         layout.Vw(100), // 100% of viewport width
+			Height:        layout.Vh(100), // 100% of viewport height
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	// Header
+	// Header using character-based height
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(m.width),
-			Height:  5,
+			Width:   layout.Vw(100),
+			Height:  layout.Ch(5), // 5 character heights
 		},
 	}
 	headerColor, _ := color.ParseColor("#7D56F4")
@@ -77,7 +80,7 @@ func (m model) View() string {
 	}
 	headerStyle.WithBorder(renderer.RoundedBorder)
 	headerStyled := renderer.NewStyledNode(headerNode, headerStyle)
-	headerStyled.Content = fmt.Sprintf("\n Terminal UI Demo - Responsive Layout\n Size: %dx%d", m.width, m.height)
+	headerStyled.Content = fmt.Sprintf("\n Terminal UI Demo - Responsive Layout\n Size: %dx%d • Using CSS Units!", m.width, m.height)
 	rootStyled.AddChild(headerStyled)
 
 	// Content area with gradient
@@ -87,9 +90,9 @@ func (m model) View() string {
 			Style: layout.Style{
 				Display:       layout.DisplayFlex,
 				FlexDirection: layout.FlexDirectionRow,
-				Width:         float64(m.width),
-				Height:        float64(contentHeight),
-				Margin:        layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+				Width:         layout.Vw(100),
+				Height:        layout.Px(float64(contentHeight)),
+				Margin:        layout.Spacing{Top: layout.Ch(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 			},
 		}
 		contentStyled := renderer.NewStyledNode(contentNode, nil)
@@ -104,8 +107,8 @@ func (m model) View() string {
 			cellNode := &layout.Node{
 				Style: layout.Style{
 					Display: layout.DisplayBlock,
-					Width:   1,
-					Height:  float64(contentHeight),
+					Width:   layout.Ch(1), // 1 character width
+					Height:  layout.Px(float64(contentHeight)),
 				},
 			}
 			cellStyle := &renderer.Style{
@@ -123,18 +126,18 @@ func (m model) View() string {
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(m.width),
-			Height:  1,
-			Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+			Width:   layout.Vw(100),
+			Height:  layout.Ch(1),
+			Margin:  layout.Spacing{Top: layout.Ch(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 		},
 	}
 	footerStyled := renderer.NewStyledNode(footerNode, nil)
-	footerStyled.Content = "Press 'q' or ESC to quit • Resize terminal to see responsive layout"
+	footerStyled.Content = "Press 'q' or ESC to quit • Resize terminal to see responsive layout • Now with CSS units!"
 	rootStyled.AddChild(footerStyled)
 
-	// Layout and render
+	// Layout and render with context
 	constraints := layout.Tight(float64(m.width), float64(m.height))
-	layout.Layout(root, constraints)
+	layout.Layout(root, constraints, ctx)
 	screen.Render(rootStyled)
 
 	return screen.String()

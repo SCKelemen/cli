@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	github.com/SCKelemen/color v1.0.0
-	github.com/SCKelemen/layout v1.0.0
+	github.com/SCKelemen/layout v1.1.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/mattn/go-runewidth v0.0.19
 )
