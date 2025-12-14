@@ -130,7 +130,7 @@ func showColorSwatches(mode renderer.ColorMode) {
 		{"Magenta", "oklch(0.60 0.25 330)"},
 	}
 
-	width := 70
+	width := 80
 	screen := renderer.NewScreen(width, 4)
 
 	root := &layout.Node{
@@ -143,7 +143,7 @@ func showColorSwatches(mode renderer.ColorMode) {
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	swatchWidth := 8
+	swatchWidth := 10
 
 	for _, swatch := range swatches {
 		c, _ := color.ParseColor(swatch.oklch)
@@ -154,7 +154,7 @@ func showColorSwatches(mode renderer.ColorMode) {
 				Display: layout.DisplayBlock,
 				Width:   float64(swatchWidth),
 				Height:  4,
-				Margin:  layout.Spacing{Top: 0, Right: 1, Bottom: 0, Left: 0},
+				Margin:  layout.Spacing{Top: 0, Right: 0, Bottom: 0, Left: 0},
 			},
 		}
 		swatchStyle := &renderer.Style{
