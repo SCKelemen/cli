@@ -17,3 +17,5 @@ examples/boxdraw_debug
 examples/width_visual_debug
 examples/bubbletea_demo
 examples/bubbletea_dashboard
+examples/bubbletea_responsive
+examples/bubbletea_flexwrap
