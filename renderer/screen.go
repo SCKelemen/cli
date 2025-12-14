@@ -95,6 +95,11 @@ func (s *Screen) renderNode(node *StyledNode) {
 	w := int(node.Node.Rect.Width)
 	h := int(node.Node.Rect.Height)
 
+	// Render background if present
+	if node.Style != nil && node.Style.Background != nil {
+		s.renderBackground(x, y, w, h, node.Style)
+	}
+
 	// Render border if present
 	if node.Style != nil && node.Style.Border != nil {
 		s.renderBorder(x, y, w, h, node.Style)
@@ -178,6 +183,31 @@ func (s *Screen) renderBorder(x, y, w, h int, style *Style) {
 		}
 		if border.Right && y+i >= 0 && y+i < s.Height && x+w-1 >= 0 && x+w-1 < s.Width {
 			s.SetCell(x+w-1, y+i, chars.Vertical, borderStyle)
+		}
+	}
+}
+
+// renderBackground fills the rectangle with the background color
+func (s *Screen) renderBackground(x, y, w, h int, style *Style) {
+	if style == nil || style.Background == nil {
+		return
+	}
+
+	// Create a background-only style (no foreground, no text attributes)
+	bgStyle := &Style{
+		Background: style.Background,
+	}
+
+	// Fill the entire rectangle with spaces
+	for row := y; row < y+h; row++ {
+		if row < 0 || row >= s.Height {
+			continue
+		}
+		for col := x; col < x+w; col++ {
+			if col < 0 || col >= s.Width {
+				continue
+			}
+			s.SetCell(col, row, ' ', bgStyle)
 		}
 	}
 }

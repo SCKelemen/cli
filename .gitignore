@@ -7,3 +7,4 @@ examples/color_fallback
 examples/animated
 examples/animtest
 examples/direct_gradient
+examples/oklch_gradients
