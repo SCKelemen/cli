@@ -5,13 +5,13 @@ go 1.25.4
 require (
 	github.com/SCKelemen/color v1.0.0
 	github.com/SCKelemen/layout v1.1.0
+	github.com/SCKelemen/text v0.0.0-00010101000000-000000000000
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/mattn/go-runewidth v0.0.19
 	golang.org/x/term v0.38.0
 )
 
 require (
-	github.com/SCKelemen/text v0.0.0-00010101000000-000000000000 // indirect
 	github.com/SCKelemen/unicode v1.0.1-0.20251225190048-233be2b0d647 // indirect
 	github.com/SCKelemen/units v0.0.0-20251215145938-c61f55703fef // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
