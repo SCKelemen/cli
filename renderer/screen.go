@@ -12,8 +12,9 @@ var textMeasurer = text.NewTerminal()
 
 // Cell represents a single character cell in the terminal
 type Cell struct {
-	Char  rune
-	Style *Style
+	// Content can be a single rune or a complete grapheme cluster (emoji sequence, etc.)
+	Content string
+	Style   *Style
 }
 
 // Screen represents the terminal screen buffer
@@ -42,7 +43,7 @@ func makeBuffer(width, height int) [][]Cell {
 	for y := 0; y < height; y++ {
 		buffer[y] = make([]Cell, width)
 		for x := 0; x < width; x++ {
-			buffer[y][x] = Cell{Char: ' ', Style: nil}
+			buffer[y][x] = Cell{Content: " ", Style: nil}
 		}
 	}
 	return buffer
@@ -69,17 +70,17 @@ func (s *Screen) SetColorMode(mode ColorMode) {
 func (s *Screen) Clear() {
 	for y := 0; y < s.Height; y++ {
 		for x := 0; x < s.Width; x++ {
-			s.Cells[y][x] = Cell{Char: ' ', Style: nil}
+			s.Cells[y][x] = Cell{Content: " ", Style: nil}
 		}
 	}
 }
 
-// SetCell sets a single cell
-func (s *Screen) SetCell(x, y int, char rune, style *Style) {
+// SetCell sets a single cell with content (can be a rune or grapheme cluster)
+func (s *Screen) SetCell(x, y int, content string, style *Style) {
 	if x < 0 || x >= s.Width || y < 0 || y >= s.Height {
 		return
 	}
-	s.Cells[y][x] = Cell{Char: char, Style: style}
+	s.Cells[y][x] = Cell{Content: content, Style: style}
 }
 
 // Render renders a styled node to the screen buffer
@@ -153,40 +154,40 @@ func (s *Screen) renderBorder(x, y, w, h int, style *Style) {
 	// Top border
 	if border.Top && y >= 0 && y < s.Height {
 		if border.Left && x >= 0 && x < s.Width {
-			s.SetCell(x, y, chars.TopLeft, borderStyle)
+			s.SetCell(x, y, string(chars.TopLeft), borderStyle)
 		}
 		for i := 1; i < w-1; i++ {
 			if x+i >= 0 && x+i < s.Width {
-				s.SetCell(x+i, y, chars.Horizontal, borderStyle)
+				s.SetCell(x+i, y, string(chars.Horizontal), borderStyle)
 			}
 		}
 		if border.Right && x+w-1 >= 0 && x+w-1 < s.Width {
-			s.SetCell(x+w-1, y, chars.TopRight, borderStyle)
+			s.SetCell(x+w-1, y, string(chars.TopRight), borderStyle)
 		}
 	}
 
 	// Bottom border
 	if border.Bottom && y+h-1 >= 0 && y+h-1 < s.Height {
 		if border.Left && x >= 0 && x < s.Width {
-			s.SetCell(x, y+h-1, chars.BottomLeft, borderStyle)
+			s.SetCell(x, y+h-1, string(chars.BottomLeft), borderStyle)
 		}
 		for i := 1; i < w-1; i++ {
 			if x+i >= 0 && x+i < s.Width {
-				s.SetCell(x+i, y+h-1, chars.Horizontal, borderStyle)
+				s.SetCell(x+i, y+h-1, string(chars.Horizontal), borderStyle)
 			}
 		}
 		if border.Right && x+w-1 >= 0 && x+w-1 < s.Width {
-			s.SetCell(x+w-1, y+h-1, chars.BottomRight, borderStyle)
+			s.SetCell(x+w-1, y+h-1, string(chars.BottomRight), borderStyle)
 		}
 	}
 
 	// Left and right borders
 	for i := 1; i < h-1; i++ {
 		if border.Left && y+i >= 0 && y+i < s.Height && x >= 0 && x < s.Width {
-			s.SetCell(x, y+i, chars.Vertical, borderStyle)
+			s.SetCell(x, y+i, string(chars.Vertical), borderStyle)
 		}
 		if border.Right && y+i >= 0 && y+i < s.Height && x+w-1 >= 0 && x+w-1 < s.Width {
-			s.SetCell(x+w-1, y+i, chars.Vertical, borderStyle)
+			s.SetCell(x+w-1, y+i, string(chars.Vertical), borderStyle)
 		}
 	}
 }
@@ -211,7 +212,7 @@ func (s *Screen) renderBackground(x, y, w, h int, style *Style) {
 			if col < 0 || col >= s.Width {
 				continue
 			}
-			s.SetCell(col, row, ' ', bgStyle)
+			s.SetCell(col, row, " ", bgStyle)
 		}
 	}
 }
@@ -257,16 +258,19 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 				break
 			}
 
-			// For grapheme clusters, we render only the first rune and skip the rest
-			// This handles emoji sequences, combining marks, etc.
-			runes := []rune(grapheme)
-			if len(runes) > 0 && col >= 0 {
-				s.SetCell(col, row, runes[0], style)
+			// Render the grapheme cluster
+			// For single-rune graphemes (most characters), this outputs one character
+			// For multi-rune graphemes (emoji sequences, combining marks), we store
+			// the entire sequence in the cell and it will be output correctly
+			// Note: Complex emoji sequences may not render correctly in all terminals
+			if len(grapheme) > 0 && col >= 0 {
+				// Store the complete grapheme cluster (handles emoji sequences correctly)
+				s.SetCell(col, row, grapheme, style)
 
-				// For wide characters/graphemes (width=2), fill the second column with a space
-				// to prevent other content from overlapping
+				// For wide characters/graphemes (width=2), mark the second column
+				// This prevents other content from overlapping
 				if graphemeWidth == 2 && col+1 < s.Width {
-					s.SetCell(col+1, row, ' ', style)
+					s.SetCell(col+1, row, " ", style)
 				}
 			}
 
@@ -296,7 +300,8 @@ func (s *Screen) String() string {
 				lastStyle = cell.Style
 			}
 
-			buf.WriteRune(cell.Char)
+			// Output the cell content (can be a single character or emoji sequence)
+			buf.WriteString(cell.Content)
 		}
 		if y < s.Height-1 {
 			buf.WriteString("\n")

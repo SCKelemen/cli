@@ -59,7 +59,7 @@ Final regular line`
 	for i, line := range lines {
 		fmt.Printf("Line %d (len=%d): ", i, len(line))
 		for j, cell := range line {
-			if cell.Char == '│' || cell.Char == '┐' || cell.Char == '┘' {
+			if cell.Content == "│" || cell.Content == "┐" || cell.Content == "┘" {
 				fmt.Printf("[border@%d]", j)
 			}
 		}
