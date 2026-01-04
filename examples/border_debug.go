@@ -19,8 +19,8 @@ func main() {
 	root := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width),
-			Height:  float64(height),
+			Width:   layout.Px(float64(width)),
+			Height:  layout.Px(float64(height)),
 		},
 	}
 
@@ -42,7 +42,12 @@ Another regular line here
 Final regular line`
 
 	constraints := layout.Tight(float64(width), float64(height))
-	layout.Layout(root, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	layout.Layout(root, constraints, ctx)
 	screen.Render(rootStyled)
 
 	output := screen.String()

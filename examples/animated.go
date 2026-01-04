@@ -56,7 +56,12 @@ func main() {
 		// Create screen and render
 		screen := renderer.NewScreen(width, height)
 		constraints := layout.Tight(float64(width), float64(height))
-		layout.Layout(root.Node, constraints)
+		ctx := &layout.LayoutContext{
+			ViewportWidth:  float64(width),
+			ViewportHeight: float64(height),
+			RootFontSize:   16,
+		}
+		layout.Layout(root.Node, constraints, ctx)
 		screen.Render(root)
 
 		// Output
@@ -74,9 +79,9 @@ func buildFullLayout(width, height int, loading *components.LoadingDots, spinner
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Spacing{Top: 1, Right: 2, Bottom: 1, Left: 2},
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Spacing{Top: layout.Px(1), Right: layout.Px(2), Bottom: layout.Px(1), Left: layout.Px(2)},
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -85,8 +90,8 @@ func buildFullLayout(width, height int, loading *components.LoadingDots, spinner
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  5,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(5),
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -121,12 +126,12 @@ func buildFullLayout(width, height int, loading *components.LoadingDots, spinner
 
 	// Add spinner
 	spinnerNode := spinner.ToStyledNode()
-	spinnerNode.Node.Style.Margin = layout.Spacing{Top: 0, Right: 2, Bottom: 0, Left: 0}
+	spinnerNode.Node.Style.Margin = layout.Spacing{Top: layout.Px(0), Right: layout.Px(2), Bottom: layout.Px(0), Left: layout.Px(0)}
 	loadingStyled.AddChild(spinnerNode)
 
 	// Add loading dots
 	loadingNode := loading.ToStyledNode()
-	loadingNode.Node.Style.Margin = layout.Spacing{Top: 0, Right: 2, Bottom: 0, Left: 0}
+	loadingNode.Node.Style.Margin = layout.Spacing{Top: layout.Px(0), Right: layout.Px(2), Bottom: layout.Px(0), Left: layout.Px(0)}
 	loadingStyled.AddChild(loadingNode)
 
 	rootStyled.AddChild(loadingStyled)
@@ -146,8 +151,8 @@ func buildFullLayout(width, height int, loading *components.LoadingDots, spinner
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  1,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(1),
 		},
 	}
 	fgGray, _ := color.ParseColor("#888888")

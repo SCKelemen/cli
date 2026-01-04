@@ -74,8 +74,8 @@ func (m responsiveModel) View() string {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(m.width),
-			Height:        float64(m.height),
+			Width:         layout.Px(float64(m.width)),
+			Height:        layout.Px(float64(m.height)),
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -84,8 +84,8 @@ func (m responsiveModel) View() string {
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(m.width),
-			Height:  3,
+			Width:   layout.Px(float64(m.width)),
+			Height:  layout.Px(3),
 		},
 	}
 	purple, _ := color.ParseColor("#7D56F4")
@@ -107,9 +107,9 @@ func (m responsiveModel) View() string {
 				Display:       layout.DisplayFlex,
 				FlexDirection: layout.FlexDirectionRow,
 				FlexWrap:      layout.FlexWrapWrap,
-				Width:         float64(m.width),
-				Height:        float64(contentHeight),
-				Margin:        layout.Spacing{Top: 1, Right: 0, Bottom: 1, Left: 0},
+				Width:         layout.Px(float64(m.width)),
+				Height:        layout.Px(float64(contentHeight)),
+				Margin:        layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(1), Left: layout.Px(0)},
 			},
 		}
 		contentStyled := renderer.NewStyledNode(contentNode, nil)
@@ -143,9 +143,9 @@ func (m responsiveModel) View() string {
 			panelNode := &layout.Node{
 				Style: layout.Style{
 					Display: layout.DisplayBlock,
-					Width:   float64(panelWidth),
-					Height:  float64(contentHeight / 2), // Two rows
-					Margin:  layout.Spacing{Top: 0, Right: 1, Bottom: 1, Left: 0},
+					Width:   layout.Px(float64(panelWidth)),
+					Height:  layout.Px(float64(contentHeight / 2)), // Two rows
+					Margin:  layout.Spacing{Top: layout.Px(0), Right: layout.Px(1), Bottom: layout.Px(1), Left: layout.Px(0)},
 				},
 			}
 
@@ -168,8 +168,8 @@ func (m responsiveModel) View() string {
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(m.width),
-			Height:  2,
+			Width:   layout.Px(float64(m.width)),
+			Height:  layout.Px(2),
 		},
 	}
 	gray, _ := color.ParseColor("#888888")
@@ -192,7 +192,12 @@ func (m responsiveModel) View() string {
 
 	// Layout and render
 	constraints := layout.Tight(float64(m.width), float64(m.height))
-	layout.Layout(root, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(m.width),
+		ViewportHeight: float64(m.height),
+		RootFontSize:   16,
+	}
+	layout.Layout(root, constraints, ctx)
 	screen.Render(rootStyled)
 
 	return screen.String()

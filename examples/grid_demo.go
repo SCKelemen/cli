@@ -22,7 +22,12 @@ func main() {
 
 	// Perform layout calculation
 	constraints := layout.Tight(float64(width), float64(height))
-	size := layout.Layout(root.Node, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	size := layout.Layout(root.Node, constraints, ctx)
 
 	fmt.Printf("Layout: %.0fx%.0f\n\n", size.Width, size.Height)
 
@@ -39,9 +44,9 @@ func buildGridLayout(width, height int) *renderer.StyledNode {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Spacing{Top: 2, Right: 2, Bottom: 2, Left: 2},
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Spacing{Top: layout.Px(2), Right: layout.Px(2), Bottom: layout.Px(2), Left: layout.Px(2)},
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -50,8 +55,8 @@ func buildGridLayout(width, height int) *renderer.StyledNode {
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  5,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(5),
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -84,9 +89,9 @@ func buildGridLayout(width, height int) *renderer.StyledNode {
 				layout.FractionTrack(1),
 				layout.FractionTrack(1),
 			},
-			GridGap: 2,
-			Width:   float64(width - 4),
-			Height:  float64(height - 10),
+			GridGap: layout.Px(2),
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(float64(height - 10)),
 		},
 	}
 	gridStyled := renderer.NewStyledNode(gridNode, nil)
@@ -141,8 +146,8 @@ func buildGridLayout(width, height int) *renderer.StyledNode {
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  2,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(2),
 		},
 	}
 	fgGray, _ := color.ParseColor("#888888")

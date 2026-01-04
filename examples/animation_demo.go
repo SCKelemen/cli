@@ -49,9 +49,9 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Uniform(2),
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Uniform(layout.Px(2)),
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -60,8 +60,8 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 	titleNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  5,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(5),
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -82,22 +82,22 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 	spinnerWrapper := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  1,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(1),
 		},
 	}
 	spinnerWrapperStyled := renderer.NewStyledNode(spinnerWrapper, nil)
 
 	spinnerNode := spinner.ToStyledNode()
-	spinnerNode.Node.Style.Width = 2
+	spinnerNode.Node.Style.Width = layout.Px(2)
 	spinnerWrapperStyled.AddChild(spinnerNode)
 
 	// Add label
 	labelNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   20,
-			Height:  1,
+			Width:   layout.Px(20),
+			Height:  layout.Px(1),
 		},
 	}
 	fgLabel, _ := color.ParseColor("#AAAAAA")
@@ -114,8 +114,8 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 	loadingWrapper := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  1,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(1),
 		},
 	}
 	loadingWrapperStyled := renderer.NewStyledNode(loadingWrapper, nil)
@@ -129,8 +129,8 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 	progressWrapper := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  3,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(3),
 		},
 	}
 	progressWrapperStyled := renderer.NewStyledNode(progressWrapper, nil)
@@ -138,8 +138,8 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 	progressLabelNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  1,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(1),
 		},
 	}
 	fgProgress, _ := color.ParseColor("#AAAAAA")
@@ -159,8 +159,8 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  1,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(1),
 		},
 	}
 	fgGray, _ := color.ParseColor("#666666")
@@ -174,7 +174,12 @@ func renderFrame(loading *components.LoadingDots, spinner *components.SpinnerDot
 
 	// Perform layout
 	constraints := layout.Tight(float64(width), float64(height))
-	layout.Layout(root, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	layout.Layout(root, constraints, ctx)
 
 	// Render
 	screen := renderer.NewScreen(width, height)

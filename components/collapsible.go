@@ -60,9 +60,9 @@ func (c *Collapsible) ToStyledNode() *renderer.StyledNode {
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(len(headerText) + 4),
-			Height:  3, // Border + padding
-			Padding: layout.Spacing{Top: 0, Right: 1, Bottom: 0, Left: 1},
+			Width:   layout.Px(float64(len(headerText) + 4)),
+			Height:  layout.Px(3), // Border + padding
+			Padding: layout.Spacing{Top: layout.Px(0), Right: layout.Px(1), Bottom: layout.Px(0), Left: layout.Px(1)},
 		},
 	}
 
@@ -101,10 +101,10 @@ func (c *Collapsible) ToStyledNode() *renderer.StyledNode {
 		contentNode := &layout.Node{
 			Style: layout.Style{
 				Display: layout.DisplayBlock,
-				Width:   float64(maxWidth + 4), // Add padding
-				Height:  float64(lines + 2),    // Add border
-				Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
-				Padding: layout.Spacing{Top: 0, Right: 1, Bottom: 0, Left: 1},
+				Width:   layout.Px(float64(maxWidth + 4)), // Add padding
+				Height:  layout.Px(float64(lines + 2)),    // Add border
+				Margin:  layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
+				Padding: layout.Spacing{Top: layout.Px(0), Right: layout.Px(1), Bottom: layout.Px(0), Left: layout.Px(1)},
 			},
 		}
 

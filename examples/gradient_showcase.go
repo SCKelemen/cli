@@ -17,7 +17,12 @@ func main() {
 	root := buildGradientShowcase(width, height)
 
 	constraints := layout.Tight(float64(width), float64(height))
-	layout.Layout(root.Node, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	layout.Layout(root.Node, constraints, ctx)
 	screen.Render(root)
 
 	fmt.Print(screen.String())
@@ -28,9 +33,9 @@ func buildGradientShowcase(width, height int) *renderer.StyledNode {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Uniform(2),
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Uniform(layout.Px(2)),
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -111,9 +116,9 @@ func buildGradientShowcase(width, height int) *renderer.StyledNode {
 	footer := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  3,
-			Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(3),
+			Margin:  layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 		},
 	}
 	fgGray, _ := color.ParseColor("#888888")
@@ -132,8 +137,8 @@ func createHeader(width int, title string) *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width),
-			Height:  5,
+			Width:   layout.Px(float64(width)),
+			Height:  layout.Px(5),
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -155,9 +160,9 @@ func addLabel(parent *renderer.StyledNode, text string, width int) {
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width),
-			Height:  1,
-			Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+			Width:   layout.Px(float64(width)),
+			Height:  layout.Px(1),
+			Margin:  layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 		},
 	}
 	fgLabel, _ := color.ParseColor("#CCCCCC")
@@ -173,8 +178,8 @@ func createGradient(width int, height int, colorFunc func(float64) color.Color) 
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width),
-			Height:  float64(height),
+			Width:   layout.Px(float64(width)),
+			Height:  layout.Px(float64(height)),
 		},
 	}
 

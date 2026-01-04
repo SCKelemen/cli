@@ -21,7 +21,12 @@ func main() {
 
 	// Perform layout calculation
 	constraints := layout.Tight(float64(width), float64(height))
-	layout.Layout(root.Node, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	layout.Layout(root.Node, constraints, ctx)
 
 	// Render to screen
 	screen.Render(root)
@@ -36,9 +41,9 @@ func buildLayout(width, height int) *renderer.StyledNode {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Spacing{Top: 2, Right: 2, Bottom: 2, Left: 2},
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Spacing{Top: layout.Px(2), Right: layout.Px(2), Bottom: layout.Px(2), Left: layout.Px(2)},
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -47,9 +52,9 @@ func buildLayout(width, height int) *renderer.StyledNode {
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  5,
-			Margin:  layout.Spacing{Top: 0, Right: 0, Bottom: 1, Left: 0},
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(5),
+			Margin:  layout.Spacing{Top: layout.Px(0), Right: layout.Px(0), Bottom: layout.Px(1), Left: layout.Px(0)},
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -78,7 +83,7 @@ func buildLayout(width, height int) *renderer.StyledNode {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
-			Margin:        layout.Spacing{Top: 1, Right: 0, Bottom: 1, Left: 0},
+			Margin:        layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(1), Left: layout.Px(0)},
 		},
 	}
 	loadingStyled := renderer.NewStyledNode(loadingContainer, nil)
@@ -86,13 +91,13 @@ func buildLayout(width, height int) *renderer.StyledNode {
 	// Add spinner
 	spinner := components.NewSpinnerDots()
 	spinnerNode := spinner.ToStyledNode()
-	spinnerNode.Node.Style.Margin = layout.Spacing{Top: 0, Right: 2, Bottom: 0, Left: 0}
+	spinnerNode.Node.Style.Margin = layout.Spacing{Top: layout.Px(0), Right: layout.Px(2), Bottom: layout.Px(0), Left: layout.Px(0)}
 	loadingStyled.AddChild(spinnerNode)
 
 	// Add loading dots
 	loading := components.NewLoadingDots()
 	loadingNode := loading.ToStyledNode()
-	loadingNode.Node.Style.Margin = layout.Spacing{Top: 0, Right: 2, Bottom: 0, Left: 0}
+	loadingNode.Node.Style.Margin = layout.Spacing{Top: layout.Px(0), Right: layout.Px(2), Bottom: layout.Px(0), Left: layout.Px(0)}
 	loadingStyled.AddChild(loadingNode)
 
 	rootStyled.AddChild(loadingStyled)
@@ -101,7 +106,7 @@ func buildLayout(width, height int) *renderer.StyledNode {
 	progress := components.NewProgressBar(40)
 	progress.SetProgress(0.65)
 	progressNode := progress.ToStyledNode()
-	progressNode.Node.Style.Margin = layout.Spacing{Top: 1, Right: 0, Bottom: 1, Left: 0}
+	progressNode.Node.Style.Margin = layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(1), Left: layout.Px(0)}
 	rootStyled.AddChild(progressNode)
 
 	// Collapsible sections
@@ -110,7 +115,7 @@ func buildLayout(width, height int) *renderer.StyledNode {
 		"This is a proof of concept for integrating\nthe layout engine with terminal UIs.\n\nWe're building beautiful terminal interfaces!",
 	)
 	section1Node := section1.ToStyledNode()
-	section1Node.Node.Style.Margin = layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0}
+	section1Node.Node.Style.Margin = layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)}
 	rootStyled.AddChild(section1Node)
 
 	section2 := components.NewCollapsible(
@@ -119,16 +124,16 @@ func buildLayout(width, height int) *renderer.StyledNode {
 	)
 	section2.Expanded = false // Collapse this one for demo
 	section2Node := section2.ToStyledNode()
-	section2Node.Node.Style.Margin = layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0}
+	section2Node.Node.Style.Margin = layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)}
 	rootStyled.AddChild(section2Node)
 
 	// Footer
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  3,
-			Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(3),
+			Margin:  layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 		},
 	}
 	fgGray, _ := color.ParseColor("#888888")

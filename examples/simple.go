@@ -21,9 +21,9 @@ func main() {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Uniform(2),
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Uniform(layout.Px(2)),
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -32,8 +32,8 @@ func main() {
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  5,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(5),
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -58,8 +58,8 @@ func main() {
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  3,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(3),
 		},
 	}
 	fgGray, _ := color.ParseColor("#888888")
@@ -73,7 +73,12 @@ func main() {
 
 	// Perform layout calculation
 	constraints := layout.Tight(float64(width), float64(height))
-	size := layout.Layout(root, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	size := layout.Layout(root, constraints, ctx)
 
 	fmt.Printf("Layout calculated: %v x %v\n", size.Width, size.Height)
 	fmt.Printf("Root rect: X=%v Y=%v W=%v H=%v\n",

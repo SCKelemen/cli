@@ -58,8 +58,8 @@ func (l *LoadingDots) ToStyledNode() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(len(text)),
-			Height:  1,
+			Width:   layout.Px(float64(len(text))),
+			Height:  layout.Px(1),
 		},
 	}
 
@@ -111,8 +111,8 @@ func (s *SpinnerDots) ToStyledNode() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   2, // Unicode spinners can be wider
-			Height:  1,
+			Width:   layout.Px(2), // Unicode spinners can be wider
+			Height:  layout.Px(1),
 		},
 	}
 
@@ -167,8 +167,8 @@ func (p *ProgressBar) ToStyledNode() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(p.Width),
-			Height:  1,
+			Width:   layout.Px(float64(p.Width)),
+			Height:  layout.Px(1),
 		},
 	}
 

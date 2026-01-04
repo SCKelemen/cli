@@ -22,7 +22,12 @@ func main() {
 
 	// Perform layout calculation
 	constraints := layout.Tight(float64(width), float64(height))
-	layout.Layout(root.Node, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: float64(height),
+		RootFontSize:   16,
+	}
+	layout.Layout(root.Node, constraints, ctx)
 
 	// Render to screen
 	screen.Render(root)
@@ -37,9 +42,9 @@ func buildColorDemo(width, height int) *renderer.StyledNode {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionColumn,
-			Width:         float64(width),
-			Height:        float64(height),
-			Padding:       layout.Spacing{Top: 1, Right: 2, Bottom: 1, Left: 2},
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(float64(height)),
+			Padding:       layout.Spacing{Top: layout.Px(1), Right: layout.Px(2), Bottom: layout.Px(1), Left: layout.Px(2)},
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -48,8 +53,8 @@ func buildColorDemo(width, height int) *renderer.StyledNode {
 	headerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  5,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(5),
 		},
 	}
 	fgWhite, _ := color.ParseColor("#FFFFFF")
@@ -123,8 +128,8 @@ func buildColorDemo(width, height int) *renderer.StyledNode {
 	footerNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width - 4),
-			Height:  2,
+			Width:   layout.Px(float64(width - 4)),
+			Height:  layout.Px(2),
 		},
 	}
 	fgGray, _ := color.ParseColor("#888888")
@@ -144,9 +149,9 @@ func addGradientBar(parent *renderer.StyledNode, label string, width int, colorF
 	labelNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width),
-			Height:  1,
-			Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+			Width:   layout.Px(float64(width)),
+			Height:  layout.Px(1),
+			Margin:  layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 		},
 	}
 	fgLabel, _ := color.ParseColor("#AAAAAA")
@@ -162,8 +167,8 @@ func addGradientBar(parent *renderer.StyledNode, label string, width int, colorF
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
-			Width:         float64(width),
-			Height:        3,
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(3),
 		},
 	}
 	barContainerStyled := renderer.NewStyledNode(barContainer, nil)
@@ -177,8 +182,8 @@ func addGradientBar(parent *renderer.StyledNode, label string, width int, colorF
 		cellNode := &layout.Node{
 			Style: layout.Style{
 				Display: layout.DisplayBlock,
-				Width:   1,
-				Height:  3,
+				Width:   layout.Px(1),
+				Height:  layout.Px(3),
 			},
 		}
 		cellStyle := &renderer.Style{
@@ -197,9 +202,9 @@ func addColorSwatches(parent *renderer.StyledNode, width int) {
 	labelNode := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   float64(width),
-			Height:  1,
-			Margin:  layout.Spacing{Top: 1, Right: 0, Bottom: 0, Left: 0},
+			Width:   layout.Px(float64(width)),
+			Height:  layout.Px(1),
+			Margin:  layout.Spacing{Top: layout.Px(1), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},
 		},
 	}
 	fgLabel, _ := color.ParseColor("#AAAAAA")
@@ -215,8 +220,8 @@ func addColorSwatches(parent *renderer.StyledNode, width int) {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
-			Width:         float64(width),
-			Height:        5,
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(5),
 		},
 	}
 	swatchContainerStyled := renderer.NewStyledNode(swatchContainer, nil)
@@ -245,9 +250,9 @@ func addColorSwatches(parent *renderer.StyledNode, width int) {
 		swatchNode := &layout.Node{
 			Style: layout.Style{
 				Display: layout.DisplayBlock,
-				Width:   float64(swatchWidth),
-				Height:  5,
-				Margin:  layout.Spacing{Top: 0, Right: 1, Bottom: 0, Left: 0},
+				Width:   layout.Px(float64(swatchWidth)),
+				Height:  layout.Px(5),
+				Margin:  layout.Spacing{Top: layout.Px(0), Right: layout.Px(1), Bottom: layout.Px(0), Left: layout.Px(0)},
 			},
 		}
 		swatchStyle := &renderer.Style{

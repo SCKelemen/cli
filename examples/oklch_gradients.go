@@ -104,8 +104,8 @@ func printGradient(width int, colorFunc func(float64) string) {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
-			Width:         float64(width),
-			Height:        2,
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(2),
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -119,8 +119,8 @@ func printGradient(width int, colorFunc func(float64) string) {
 		cellNode := &layout.Node{
 			Style: layout.Style{
 				Display: layout.DisplayBlock,
-				Width:   1,
-				Height:  2,
+				Width:   layout.Px(1),
+				Height:  layout.Px(2),
 			},
 		}
 		cellStyle := &renderer.Style{
@@ -132,7 +132,12 @@ func printGradient(width int, colorFunc func(float64) string) {
 	}
 
 	constraints := layout.Tight(float64(width), 2)
-	layout.Layout(root, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: 2,
+		RootFontSize:   16,
+	}
+	layout.Layout(root, constraints, ctx)
 	screen.Render(rootStyled)
 	fmt.Print(screen.String())
 }
@@ -160,8 +165,8 @@ func printColorSwatches() {
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
-			Width:         float64(width),
-			Height:        4,
+			Width:         layout.Px(float64(width)),
+			Height:        layout.Px(4),
 		},
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
@@ -175,9 +180,9 @@ func printColorSwatches() {
 		swatchNode := &layout.Node{
 			Style: layout.Style{
 				Display: layout.DisplayBlock,
-				Width:   float64(swatchWidth),
-				Height:  4,
-				Margin:  layout.Spacing{Top: 0, Right: 0, Bottom: 0, Left: 0},  // No margins, boxes are adjacent
+				Width:   layout.Px(float64(swatchWidth)),
+				Height:  layout.Px(4),
+				Margin:  layout.Spacing{Top: layout.Px(0), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},  // No margins, boxes are adjacent
 			},
 		}
 		swatchStyle := &renderer.Style{
@@ -193,7 +198,12 @@ func printColorSwatches() {
 	}
 
 	constraints := layout.Tight(float64(width), 4)
-	layout.Layout(root, constraints)
+	ctx := &layout.LayoutContext{
+		ViewportWidth:  float64(width),
+		ViewportHeight: 4,
+		RootFontSize:   16,
+	}
+	layout.Layout(root, constraints, ctx)
 	screen.Render(rootStyled)
 	fmt.Print(screen.String())
 }

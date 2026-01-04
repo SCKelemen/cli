@@ -70,8 +70,8 @@ func (m *MessageBlock) ToStyledNode() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
 			Display: layout.DisplayBlock,
-			Width:   width,
-			Height:  height,
+			Width:   layout.Px(width),
+			Height:  layout.Px(height),
 		},
 	}
 
