@@ -7,7 +7,9 @@ type TextOverflow int
 
 const (
 	TextOverflowClip TextOverflow = iota // Clip text at boundary
-	TextOverflowEllipsis                 // Show ellipsis (…) for overflow
+	TextOverflowEllipsis                 // Show ellipsis (…) at end for overflow
+	TextOverflowEllipsisStart            // Show ellipsis (…) at start for overflow
+	TextOverflowEllipsisMiddle           // Show ellipsis (…) in middle for overflow
 )
 
 // Style defines visual attributes without sizing properties.

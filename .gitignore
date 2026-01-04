@@ -21,3 +21,5 @@ examples/bubbletea_responsive
 examples/bubbletea_flexwrap
 examples/bubbletea_simple
 examples/terminal_dimensions
+examples/ellipsis_demo
+examples/unicode_demo

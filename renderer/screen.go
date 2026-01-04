@@ -234,15 +234,19 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 			continue
 		}
 
-		// Check if we need to apply ellipsis for this line
-		useEllipsis := style != nil && style.TextOverflow == TextOverflowEllipsis
-
 		// Measure line width with proper Unicode handling
 		lineWidth := textMeasurer.Width(line)
 
-		// If line overflows and ellipsis is enabled, use text.ElideEnd()
-		if useEllipsis && lineWidth > float64(w) {
-			line = textMeasurer.ElideEndWith(line, float64(w), "…")
+		// Apply ellipsis if line overflows
+		if style != nil && lineWidth > float64(w) {
+			switch style.TextOverflow {
+			case TextOverflowEllipsis:
+				line = textMeasurer.ElideEndWith(line, float64(w), "…")
+			case TextOverflowEllipsisStart:
+				line = textMeasurer.ElideStartWith(line, float64(w), "…")
+			case TextOverflowEllipsisMiddle:
+				line = textMeasurer.ElideWith(line, float64(w), "…")
+			}
 		}
 
 		// Render the line with proper grapheme cluster handling
