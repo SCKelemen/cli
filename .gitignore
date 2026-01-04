@@ -24,3 +24,4 @@ examples/terminal_dimensions
 examples/ellipsis_demo
 examples/unicode_demo
 examples/wrap_align_demo
+examples/justify_demo

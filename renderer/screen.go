@@ -304,6 +304,16 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 			lineWidth = textMeasurer.Width(lineText)
 		}
 
+		// Apply justify alignment (if not last line and text is short enough)
+		isLastLine := lineIdx == len(lines)-1
+		if style != nil && style.TextAlign == TextAlignJustify && !isLastLine && lineWidth < float64(w) {
+			// Only justify if line has multiple words
+			if strings.Contains(lineText, " ") {
+				lineText = textMeasurer.JustifyText(lineText, float64(w), text.TextJustifyInterWord)
+				lineWidth = textMeasurer.Width(lineText)
+			}
+		}
+
 		// Calculate starting column based on alignment
 		col := x
 		if style != nil {
@@ -313,8 +323,7 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 			case TextAlignRight:
 				col = x + w - int(lineWidth)
 			case TextAlignJustify:
-				// TODO: Implement justify spacing
-				// For now, left-align
+				// Justify was already applied above, so left-align the result
 				col = x
 			case TextAlignLeft:
 				col = x
