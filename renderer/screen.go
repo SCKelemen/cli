@@ -223,7 +223,46 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 		return
 	}
 
-	lines := strings.Split(content, "\n")
+	// Get lines based on wrapping mode
+	var lines []text.Line
+	wrapMode := TextWrapNone
+	if style != nil {
+		wrapMode = style.TextWrap
+	}
+
+	switch wrapMode {
+	case TextWrapNone:
+		// Manual line breaks only
+		rawLines := strings.Split(content, "\n")
+		lines = make([]text.Line, len(rawLines))
+		for i, line := range rawLines {
+			lines[i] = text.Line{
+				Content: line,
+				Width:   textMeasurer.Width(line),
+			}
+		}
+
+	case TextWrapNormal:
+		// Standard greedy wrapping
+		lines = textMeasurer.Wrap(content, text.WrapOptions{
+			MaxWidth:         float64(w),
+			BreakWords:       false,
+			PreserveNewlines: true,
+		})
+
+	case TextWrapBalanced:
+		// Balanced line lengths
+		lines = textMeasurer.WrapBalanced(content, float64(w))
+
+	case TextWrapPretty:
+		// High-quality Knuth-Plass wrapping
+		lines = textMeasurer.WrapKnuthPlass(content, text.KnuthPlassOptions{
+			MaxWidth:  float64(w),
+			Tolerance: 1.0,
+		})
+	}
+
+	// Render each line
 	for lineIdx, line := range lines {
 		if lineIdx >= h {
 			break
@@ -234,24 +273,41 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 			continue
 		}
 
-		// Measure line width with proper Unicode handling
-		lineWidth := textMeasurer.Width(line)
+		lineText := line.Content
+		lineWidth := line.Width
 
 		// Apply ellipsis if line overflows
 		if style != nil && lineWidth > float64(w) {
 			switch style.TextOverflow {
 			case TextOverflowEllipsis:
-				line = textMeasurer.ElideEndWith(line, float64(w), "…")
+				lineText = textMeasurer.ElideEndWith(lineText, float64(w), "…")
 			case TextOverflowEllipsisStart:
-				line = textMeasurer.ElideStartWith(line, float64(w), "…")
+				lineText = textMeasurer.ElideStartWith(lineText, float64(w), "…")
 			case TextOverflowEllipsisMiddle:
-				line = textMeasurer.ElideWith(line, float64(w), "…")
+				lineText = textMeasurer.ElideWith(lineText, float64(w), "…")
+			}
+			lineWidth = textMeasurer.Width(lineText)
+		}
+
+		// Calculate starting column based on alignment
+		col := x
+		if style != nil {
+			switch style.TextAlign {
+			case TextAlignCenter:
+				col = x + (w-int(lineWidth))/2
+			case TextAlignRight:
+				col = x + w - int(lineWidth)
+			case TextAlignJustify:
+				// TODO: Implement justify spacing
+				// For now, left-align
+				col = x
+			case TextAlignLeft:
+				col = x
 			}
 		}
 
 		// Render the line with proper grapheme cluster handling
-		col := x
-		graphemes := textMeasurer.Graphemes(line)
+		graphemes := textMeasurer.Graphemes(lineText)
 
 		for _, grapheme := range graphemes {
 			// Measure grapheme width

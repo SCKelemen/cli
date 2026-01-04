@@ -12,6 +12,26 @@ const (
 	TextOverflowEllipsisMiddle           // Show ellipsis (…) in middle for overflow
 )
 
+// TextWrap defines how text should wrap
+type TextWrap int
+
+const (
+	TextWrapNone TextWrap = iota // No wrapping, preserve manual line breaks only
+	TextWrapNormal               // Standard greedy wrapping
+	TextWrapBalanced             // Balanced line lengths (prettier)
+	TextWrapPretty               // High-quality Knuth-Plass wrapping
+)
+
+// TextAlign defines horizontal text alignment
+type TextAlign int
+
+const (
+	TextAlignLeft TextAlign = iota // Left-aligned (default)
+	TextAlignCenter                // Center-aligned
+	TextAlignRight                 // Right-aligned
+	TextAlignJustify               // Justified (with Knuth-Plass)
+)
+
 // Style defines visual attributes without sizing properties.
 // Sizing and layout are handled by the layout engine.
 type Style struct {
@@ -28,8 +48,10 @@ type Style struct {
 	Blink         bool
 	Reverse       bool
 
-	// Text overflow handling
-	TextOverflow TextOverflow
+	// Text layout
+	TextWrap     TextWrap     // How text should wrap
+	TextAlign    TextAlign    // Horizontal alignment
+	TextOverflow TextOverflow // Overflow handling
 
 	// Borders
 	Border      *BorderStyle
