@@ -86,17 +86,23 @@ func (s *Screen) SetCell(x, y int, content string, style *Style) {
 // Render renders a styled node to the screen buffer
 func (s *Screen) Render(node *StyledNode) {
 	s.Clear()
-	s.renderNode(node)
+	s.renderNodeWithOffset(node, 0, 0)
 }
 
-// renderNode recursively renders a node and its children
+// renderNode recursively renders a node and its children (legacy method)
 func (s *Screen) renderNode(node *StyledNode) {
+	s.renderNodeWithOffset(node, 0, 0)
+}
+
+// renderNodeWithOffset recursively renders a node and its children with accumulated offsets
+func (s *Screen) renderNodeWithOffset(node *StyledNode, offsetX, offsetY int) {
 	if node == nil || node.Node == nil {
 		return
 	}
 
-	x := int(node.Node.Rect.X)
-	y := int(node.Node.Rect.Y)
+	// Calculate absolute position by adding parent offsets
+	x := int(node.Node.Rect.X) + offsetX
+	y := int(node.Node.Rect.Y) + offsetY
 	w := int(node.Node.Rect.Width)
 	h := int(node.Node.Rect.Height)
 
@@ -128,9 +134,9 @@ func (s *Screen) renderNode(node *StyledNode) {
 		s.renderText(contentX, contentY, contentW, contentH, node.Content, node.Style)
 	}
 
-	// Render children
+	// Render children with accumulated offsets
 	for _, child := range node.Children {
-		s.renderNode(child)
+		s.renderNodeWithOffset(child, x, y)
 	}
 }
 
