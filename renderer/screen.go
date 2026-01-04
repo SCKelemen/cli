@@ -242,24 +242,39 @@ func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
 			}
 		}
 
-	case TextWrapNormal:
-		// Standard greedy wrapping
-		lines = textMeasurer.Wrap(content, text.WrapOptions{
-			MaxWidth:         float64(w),
-			BreakWords:       false,
-			PreserveNewlines: true,
-		})
+	case TextWrapNormal, TextWrapBalanced, TextWrapPretty:
+		// For wrapping modes, we need to handle manual line breaks (paragraphs) first
+		// Split on \n to get paragraphs, wrap each separately, then combine
+		paragraphs := strings.Split(content, "\n")
+		lines = make([]text.Line, 0)
 
-	case TextWrapBalanced:
-		// Balanced line lengths
-		lines = textMeasurer.WrapBalanced(content, float64(w))
+		for _, para := range paragraphs {
+			if para == "" {
+				// Empty line - preserve as blank line
+				lines = append(lines, text.Line{
+					Content: "",
+					Width:   0,
+				})
+				continue
+			}
 
-	case TextWrapPretty:
-		// High-quality Knuth-Plass wrapping
-		lines = textMeasurer.WrapKnuthPlass(content, text.KnuthPlassOptions{
-			MaxWidth:  float64(w),
-			Tolerance: 1.0,
-		})
+			var paraLines []text.Line
+			switch wrapMode {
+			case TextWrapNormal:
+				paraLines = textMeasurer.Wrap(para, text.WrapOptions{
+					MaxWidth:   float64(w),
+					BreakWords: false,
+				})
+			case TextWrapBalanced:
+				paraLines = textMeasurer.WrapBalanced(para, float64(w))
+			case TextWrapPretty:
+				paraLines = textMeasurer.WrapKnuthPlass(para, text.KnuthPlassOptions{
+					MaxWidth:  float64(w),
+					Tolerance: 1.0,
+				})
+			}
+			lines = append(lines, paraLines...)
+		}
 	}
 
 	// Render each line
