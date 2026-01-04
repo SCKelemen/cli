@@ -1,55 +1,14 @@
 package renderer
 
 import (
-	"os"
 	"strings"
 
 	"github.com/SCKelemen/layout"
-	"github.com/mattn/go-runewidth"
+	"github.com/SCKelemen/text"
 )
 
-var useWideAmbiguous bool
-
-func init() {
-	// Configure runewidth for ambiguous characters (•, ✓, etc.)
-	// These can be either 1 or 2 columns depending on terminal/locale
-	lang := os.Getenv("LANG")
-	termProgram := os.Getenv("TERM_PROGRAM")
-
-	// Use wide rendering if:
-	// 1. Locale is East Asian (ja, ko, zh)
-	// 2. Terminal.app (which uses system font that may render these wide)
-	useWideAmbiguous = strings.Contains(lang, "ja_") ||
-		strings.Contains(lang, "ko_") ||
-		strings.Contains(lang, "zh_") ||
-		termProgram == "Apple_Terminal"
-
-	if useWideAmbiguous {
-		// Set environment variable for runewidth library
-		os.Setenv("RUNEWIDTH_EASTASIAN", "1")
-	}
-}
-
-// getRuneWidth returns the display width of a rune, accounting for ambiguous characters
-func getRuneWidth(r rune) int {
-	w := runewidth.RuneWidth(r)
-
-	// If runewidth reports 1 but we should use wide ambiguous, check for ambiguous chars
-	if w == 1 && useWideAmbiguous {
-		// Common ambiguous characters that render as 2 columns in many terminals
-		switch r {
-		case '•', '·', '※', '…', '‥', '℃', '℉', '°',
-			'✓', '✔', '✕', '✖', '✗', '✘',
-			'→', '←', '↑', '↓', '⇒', '⇐', '⇑', '⇓',
-			'■', '□', '▪', '▫', '▲', '△', '▼', '▽',
-			'◆', '◇', '○', '◎', '●', '◐', '◑',
-			'★', '☆':
-			return 2
-		}
-	}
-
-	return w
-}
+// textMeasurer is the Unicode-aware text measurement library
+var textMeasurer = text.NewTerminal()
 
 // Cell represents a single character cell in the terminal
 type Cell struct {
@@ -258,12 +217,12 @@ func (s *Screen) renderBackground(x, y, w, h int, style *Style) {
 }
 
 // renderText renders text within the specified rectangle
-func (s *Screen) renderText(x, y, w, h int, text string, style *Style) {
-	if text == "" {
+func (s *Screen) renderText(x, y, w, h int, content string, style *Style) {
+	if content == "" {
 		return
 	}
 
-	lines := strings.Split(text, "\n")
+	lines := strings.Split(content, "\n")
 	for lineIdx, line := range lines {
 		if lineIdx >= h {
 			break
@@ -277,53 +236,41 @@ func (s *Screen) renderText(x, y, w, h int, text string, style *Style) {
 		// Check if we need to apply ellipsis for this line
 		useEllipsis := style != nil && style.TextOverflow == TextOverflowEllipsis
 
-		// Calculate line width and check for overflow
-		lineWidth := 0
-		runes := []rune(line)
-		for _, r := range runes {
-			lineWidth += getRuneWidth(r)
+		// Measure line width with proper Unicode handling
+		lineWidth := textMeasurer.Width(line)
+
+		// If line overflows and ellipsis is enabled, use text.ElideEnd()
+		if useEllipsis && lineWidth > float64(w) {
+			line = textMeasurer.ElideEndWith(line, float64(w), "…")
 		}
 
-		// If line overflows and ellipsis is enabled, truncate
-		if useEllipsis && lineWidth > w {
-			ellipsisWidth := getRuneWidth('…')
-			truncated := []rune{}
-			currentWidth := 0
-
-			for _, r := range runes {
-				charWidth := getRuneWidth(r)
-				if currentWidth+charWidth+ellipsisWidth > w {
-					break
-				}
-				truncated = append(truncated, r)
-				currentWidth += charWidth
-			}
-
-			truncated = append(truncated, '…')
-			line = string(truncated)
-		}
-
-		// Render the line
+		// Render the line with proper grapheme cluster handling
 		col := x
-		for _, char := range line {
-			charWidth := getRuneWidth(char)
+		graphemes := textMeasurer.Graphemes(line)
 
-			// Check if character fits in the remaining space
-			if col+charWidth > x+w || col >= s.Width {
+		for _, grapheme := range graphemes {
+			// Measure grapheme width
+			graphemeWidth := int(textMeasurer.Width(grapheme))
+
+			// Check if grapheme fits in the remaining space
+			if col+graphemeWidth > x+w || col >= s.Width {
 				break
 			}
 
-			if col >= 0 {
-				s.SetCell(col, row, char, style)
+			// For grapheme clusters, we render only the first rune and skip the rest
+			// This handles emoji sequences, combining marks, etc.
+			runes := []rune(grapheme)
+			if len(runes) > 0 && col >= 0 {
+				s.SetCell(col, row, runes[0], style)
 
-				// For wide characters (width=2), fill the second column with a space
+				// For wide characters/graphemes (width=2), fill the second column with a space
 				// to prevent other content from overlapping
-				if charWidth == 2 && col+1 < s.Width {
+				if graphemeWidth == 2 && col+1 < s.Width {
 					s.SetCell(col+1, row, ' ', style)
 				}
 			}
 
-			col += charWidth
+			col += graphemeWidth
 		}
 	}
 }

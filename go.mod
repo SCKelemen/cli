@@ -7,9 +7,13 @@ require (
 	github.com/SCKelemen/layout v1.1.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/mattn/go-runewidth v0.0.19
+	golang.org/x/term v0.38.0
 )
 
 require (
+	github.com/SCKelemen/text v0.0.0-00010101000000-000000000000 // indirect
+	github.com/SCKelemen/unicode v1.0.1-0.20251225190048-233be2b0d647 // indirect
+	github.com/SCKelemen/units v0.0.0-20251215145938-c61f55703fef // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
 	github.com/charmbracelet/lipgloss v1.1.0 // indirect
@@ -27,6 +31,11 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/term v0.38.0 // indirect
 	golang.org/x/text v0.3.8 // indirect
 )
+
+replace github.com/SCKelemen/text => ../text
+
+replace github.com/SCKelemen/unicode => ../unicode
+
+replace github.com/SCKelemen/wpt-test-gen => ../wpt-test-gen
