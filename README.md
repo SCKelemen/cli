@@ -6,6 +6,7 @@ A proof of concept for integrating a CSS-based layout engine with terminal UIs i
 
 - **CSS-based Layouts**: Full support for Flexbox and Grid layouts in the terminal
 - **Advanced Color Support**: OKLCH color gradients and wide-gamut color spaces via the `color` library
+- **Unicode Text Support**: Proper handling of emoji sequences, CJK characters, and grapheme clusters via the `text` library
 - **Responsive Design**: Automatically relayouts on terminal resize
 - **Component System**: Reusable UI components (collapsible sections, loading indicators, progress bars)
 - **Smart Rendering**: Efficient screen buffer with ANSI escape code optimization
@@ -48,6 +49,7 @@ A proof of concept for integrating a CSS-based layout engine with terminal UIs i
 
 - [layout](https://github.com/SCKelemen/layout) - CSS Grid/Flexbox layout engine
 - [color](https://github.com/SCKelemen/color) - Professional color manipulation
+- [text](https://github.com/SCKelemen/text) - Unicode-aware text measurement and rendering
 - [bubbletea](https://github.com/charmbracelet/bubbletea) - Terminal UI framework
 
 ## Running the Demo
