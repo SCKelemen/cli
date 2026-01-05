@@ -296,8 +296,9 @@ func (m model) createGauge(label string, value float64, width int, colorHex stri
 func (m model) createSystemInfo() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display:  layout.DisplayBlock,
-			FlexGrow: 1,
+			Display:   layout.DisplayBlock,
+			FlexGrow:  1,
+			MinHeight: layout.Px(10), // Prevent collapse to zero height
 		},
 	}
 
@@ -341,8 +342,9 @@ Heap Alloc: %.2f MB`,
 func (m model) createActivityLog() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display:  layout.DisplayBlock,
-			FlexGrow: 1,
+			Display:   layout.DisplayBlock,
+			FlexGrow:  1,
+			MinHeight: layout.Px(10), // Prevent collapse to zero height
 		},
 	}
 
