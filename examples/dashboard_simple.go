@@ -90,24 +90,27 @@ func buildSimpleDashboard(width, height int) *renderer.StyledNode {
 
 	rootStyled.AddChild(gaugesStyled)
 
-	// Info panels
+	// Info panels - use FlexGrow to fill remaining space
 	panelsContainer := &layout.Node{
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
 			Width:         layout.Px(float64(width - 4)),
-			Height:        layout.Px(12),
+			FlexGrow:      1,
 		},
 	}
 	panelsStyled := renderer.NewStyledNode(panelsContainer, nil)
 
 	// Left panel
-	leftPanel := createInfoPanel("System Info", "OS: darwin\nCPUs: 14\nMemory: 16GB", (width-4)/2-1)
-	leftPanel.Node.Style.Margin.Right = layout.Px(2)
+	leftPanel := createInfoPanel("System Info", "OS: darwin\nCPUs: 14\nMemory: 16GB", (width-4)/2)
+	leftPanel.Node.Style.FlexGrow = 1
+	leftPanel.Node.Style.Margin.Right = layout.Px(1)
 	panelsStyled.AddChild(leftPanel)
 
 	// Right panel
-	rightPanel := createInfoPanel("Activity", "Service started\nConnection OK\nCache updated", (width-4)/2-1)
+	rightPanel := createInfoPanel("Activity", "Service started\nConnection OK\nCache updated", (width-4)/2)
+	rightPanel.Node.Style.FlexGrow = 1
+	rightPanel.Node.Style.Margin.Left = layout.Px(1)
 	panelsStyled.AddChild(rightPanel)
 
 	rootStyled.AddChild(panelsStyled)
@@ -175,9 +178,9 @@ func createSimpleGauge(label string, value float64, width int) *renderer.StyledN
 func createInfoPanel(title, content string, width int) *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display: layout.DisplayBlock,
-			Width:   layout.Px(float64(width)),
-			Height:  layout.Px(12),
+			Display:  layout.DisplayBlock,
+			Width:    layout.Px(float64(width)),
+			MinHeight: layout.Px(10), // Set minimum height to prevent collapse
 		},
 	}
 

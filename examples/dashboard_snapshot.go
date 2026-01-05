@@ -114,33 +114,29 @@ func buildDashboard(width, height int) *renderer.StyledNode {
 	rootStyled.AddChild(gaugesStyled)
 
 	// Bottom section: System Info + Activity
-	// Calculate available height: total - (padding + header+margin + gauges+margin + footer+margin)
-	bottomHeight := height - 2 - 4 - 9 - 2 // total - padding(2) - header(3+1) - gauges(8+1) - footer(1+1)
-	if bottomHeight < 10 {
-		bottomHeight = 10
-	}
-
+	// Use FlexGrow to fill remaining space instead of explicit height
 	bottomContainer := &layout.Node{
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
 			FlexDirection: layout.FlexDirectionRow,
 			Width:         layout.Px(float64(width - 4)),
-			Height:        layout.Px(float64(bottomHeight)),
+			FlexGrow:      1,
 		},
 	}
 	bottomStyled := renderer.NewStyledNode(bottomContainer, nil)
 
 	// System Info (left)
 	sysInfo := createSystemInfo()
-	sysInfo.Node.Style.Width = layout.Px(float64((width-4)/2 - 1))
-	sysInfo.Node.Style.Height = layout.Px(float64(bottomHeight))
-	sysInfo.Node.Style.Margin.Right = layout.Px(2)
+	sysInfo.Node.Style.Width = layout.Px(float64((width - 4) / 2))
+	sysInfo.Node.Style.FlexGrow = 1
+	sysInfo.Node.Style.Margin.Right = layout.Px(1)
 	bottomStyled.AddChild(sysInfo)
 
 	// Activity Log (right)
 	activityLog := createActivityLog()
-	activityLog.Node.Style.Width = layout.Px(float64((width-4)/2 - 1))
-	activityLog.Node.Style.Height = layout.Px(float64(bottomHeight))
+	activityLog.Node.Style.Width = layout.Px(float64((width - 4) / 2))
+	activityLog.Node.Style.FlexGrow = 1
+	activityLog.Node.Style.Margin.Left = layout.Px(1)
 	bottomStyled.AddChild(activityLog)
 
 	rootStyled.AddChild(bottomStyled)
@@ -217,7 +213,8 @@ func createGauge(label string, value float64, width int) *renderer.StyledNode {
 func createSystemInfo() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display: layout.DisplayBlock,
+			Display:   layout.DisplayBlock,
+			MinHeight: layout.Px(10), // Set minimum height to prevent collapse
 		},
 	}
 
@@ -261,7 +258,8 @@ Heap Alloc: %.2f MB`,
 func createActivityLog() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display: layout.DisplayBlock,
+			Display:   layout.DisplayBlock,
+			MinHeight: layout.Px(10), // Set minimum height to prevent collapse
 		},
 	}
 
