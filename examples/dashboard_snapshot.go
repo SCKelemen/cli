@@ -114,7 +114,8 @@ func buildDashboard(width, height int) *renderer.StyledNode {
 	rootStyled.AddChild(gaugesStyled)
 
 	// Bottom section: System Info + Activity
-	bottomHeight := height - 4 - 8 - 3 - 1 // total - padding - gauges - header - footer
+	// Calculate available height: total - (padding + header+margin + gauges+margin + footer+margin)
+	bottomHeight := height - 2 - 4 - 9 - 2 // total - padding(2) - header(3+1) - gauges(8+1) - footer(1+1)
 	if bottomHeight < 10 {
 		bottomHeight = 10
 	}
