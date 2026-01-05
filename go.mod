@@ -34,6 +34,8 @@ require (
 	golang.org/x/text v0.3.8 // indirect
 )
 
+replace github.com/SCKelemen/layout => ../layout
+
 replace github.com/SCKelemen/text => ../text
 
 replace github.com/SCKelemen/unicode => ../unicode

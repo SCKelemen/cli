@@ -213,8 +213,7 @@ func createGauge(label string, value float64, width int) *renderer.StyledNode {
 func createSystemInfo() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display:   layout.DisplayBlock,
-			MinHeight: layout.Px(10), // Set minimum height to prevent collapse
+			Display: layout.DisplayBlock,
 		},
 	}
 
@@ -258,8 +257,7 @@ Heap Alloc: %.2f MB`,
 func createActivityLog() *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display:   layout.DisplayBlock,
-			MinHeight: layout.Px(10), // Set minimum height to prevent collapse
+			Display: layout.DisplayBlock,
 		},
 	}
 

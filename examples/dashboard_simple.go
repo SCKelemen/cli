@@ -178,9 +178,8 @@ func createSimpleGauge(label string, value float64, width int) *renderer.StyledN
 func createInfoPanel(title, content string, width int) *renderer.StyledNode {
 	node := &layout.Node{
 		Style: layout.Style{
-			Display:  layout.DisplayBlock,
-			Width:    layout.Px(float64(width)),
-			MinHeight: layout.Px(10), // Set minimum height to prevent collapse
+			Display: layout.DisplayBlock,
+			Width:   layout.Px(float64(width)),
 		},
 	}
 
