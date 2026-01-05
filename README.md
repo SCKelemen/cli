@@ -139,20 +139,28 @@ func (c *CustomComponent) ToStyledNode() *renderer.StyledNode {
 }
 ```
 
+## Current Features in Layout Engine
+
+The layout engine (`github.com/SCKelemen/layout`) includes:
+
+- ✅ **Text-based units**: `em`, `rem`, `ch` for font-relative sizing
+- ✅ **Viewport units**: `vh`, `vw`, `vmin`, `vmax` for responsive layouts
+- ✅ **Absolute units**: `px`, `pt`, `pc`, `in`, `cm`, `mm`, `Q`
+- ✅ **Writing modes**: `horizontal-tb`, `vertical-lr` for international text
+- ✅ **CSS Grid**: Full grid layout with template areas, auto-placement, spanning
+- ✅ **Flexbox**: Complete flexbox implementation with all alignment options
+- ✅ **Box model**: Margin, padding, border with proper box-sizing support
+- ✅ **Intrinsic sizing**: `min-content`, `max-content`, `fit-content` sizing
+
 ## Future Enhancements
 
 - Line-based CLI mode (print-only, non-redrawable content)
 - Multiline, multicursor text editor component
 - More advanced animation easing functions
-- Text-based units (em, rem, ch) in layout engine
-- Viewport units (vh, vw) in layout engine
 - Bottom-up content flow and reflow
 - More component types (tables, lists, menus)
+- Additional writing modes (`vertical-rl`, `sideways-lr`, `sideways-rl`)
 
 ## Contributing
 
 This is a proof of concept project. Feel free to experiment and extend it for your own use cases.
-
-## License
-
-MIT
