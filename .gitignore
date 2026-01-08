@@ -25,3 +25,5 @@ examples/ellipsis_demo
 examples/unicode_demo
 examples/wrap_align_demo
 examples/justify_demo
+examples/components_demo/components_demo
+examples/viz/viz
