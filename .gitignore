@@ -27,5 +27,5 @@ examples/wrap_align_demo
 examples/justify_demo
 examples/components_demo/components_demo
 examples/viz/viz
-components_demo
-viz
+/components_demo
+/viz

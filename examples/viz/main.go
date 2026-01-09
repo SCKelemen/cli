@@ -19,7 +19,7 @@ Usage:
 
 Options:
   -type string
-        Visualization type: heatmap, line-graph, bar-chart, stat-card (default "heatmap")
+        Visualization type: heatmap, line-graph, bar-chart, stat-card, area-chart, scatter-plot (default "heatmap")
   -format string
         Output format: svg, terminal (default "terminal")
   -data string
@@ -35,7 +35,9 @@ Options:
 
 Data Formats:
   Heatmap:      {"days": [{"date": "2024-01-01T00:00:00Z", "count": 10}, ...], "type": "linear"}
-  Line Graph:   {"points": [{"date": "2024-01-01T00:00:00Z", "value": 100}, ...], "color": "#3B82F6"}
+  Line Graph:   {"points": [{"date": "2024-01-01T00:00:00Z", "value": 100}, ...], "color": "#3B82F6", "smooth": true, "markerType": "diamond"}
+  Area Chart:   {"points": [{"date": "2024-01-01T00:00:00Z", "value": 100}, ...], "color": "#10B981", "smooth": true}
+  Scatter Plot: {"points": [{"date": "2024-01-01T00:00:00Z", "value": 100}, ...], "color": "#F59E0B", "markerType": "circle"}
   Bar Chart:    {"bars": [{"value": 100, "secondary": 50, "label": "Item 1"}, ...], "color": "#3B82F6"}
   Stat Card:    {"title": "Total", "value": "1,234", "subtitle": "past month", "color": "#3B82F6"}
 
@@ -186,6 +188,22 @@ func renderVisualization(r dataviz.Renderer, vizType string, data []byte, bounds
 			os.Exit(1)
 		}
 		return r.RenderStatCard(statData, bounds, config)
+
+	case "area-chart":
+		var areaData dataviz.AreaChartData
+		if err := json.Unmarshal(data, &areaData); err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing area chart data: %v\n", err)
+			os.Exit(1)
+		}
+		return r.RenderAreaChart(areaData, bounds, config)
+
+	case "scatter-plot":
+		var scatterData dataviz.ScatterPlotData
+		if err := json.Unmarshal(data, &scatterData); err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing scatter plot data: %v\n", err)
+			os.Exit(1)
+		}
+		return r.RenderScatterPlot(scatterData, bounds, config)
 
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown visualization type: %s\n", vizType)
