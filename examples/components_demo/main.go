@@ -81,6 +81,55 @@ func main() {
 
 	lineNode := lineGraph.ToStyledNode()
 	fmt.Println(lineNode.Content)
+	fmt.Println()
+
+	// 5. AreaChart Component
+	fmt.Println("5. AreaChart Component:")
+	areaData := dataviz.AreaChartData{
+		Points: []dataviz.TimeSeriesData{
+			{Value: 10}, {Value: 25}, {Value: 15},
+			{Value: 35}, {Value: 30}, {Value: 45},
+			{Value: 40}, {Value: 60}, {Value: 55},
+			{Value: 70}, {Value: 65}, {Value: 80},
+		},
+		Color:       "#3B82F6",
+		FillColor:   "#3B82F6",
+		UseGradient: true,
+		Smooth:      true,
+		Tension:     0.3,
+	}
+	areaChart := components.NewAreaChart(areaData).
+		WithSize(60, 12).
+		WithColor("#3B82F6").
+		WithTheme("default")
+
+	areaNode := areaChart.ToStyledNode()
+	fmt.Println(areaNode.Content)
+	fmt.Println()
+
+	// 6. ScatterPlot Component
+	fmt.Println("6. ScatterPlot Component:")
+	scatterPoints := make([]dataviz.ScatterPoint, 12)
+	for i := 0; i < 12; i++ {
+		scatterPoints[i] = dataviz.ScatterPoint{
+			Date:  time.Now().AddDate(0, 0, i-12),
+			Value: 10 + (i * 5) + ((i % 3) * 10),
+			Size:  3.0,
+		}
+	}
+	scatterData := dataviz.ScatterPlotData{
+		Points:     scatterPoints,
+		Color:      "#3B82F6",
+		MarkerType: "circle",
+		MarkerSize: 3.0,
+	}
+	scatterPlot := components.NewScatterPlot(scatterData).
+		WithSize(60, 12).
+		WithColor("#3B82F6").
+		WithTheme("default")
+
+	scatterNode := scatterPlot.ToStyledNode()
+	fmt.Println(scatterNode.Content)
 
 	fmt.Println("\n=== Demo Complete ===")
 	fmt.Println("\nUsage Tips:")
@@ -88,6 +137,8 @@ func main() {
 	fmt.Println("- Use WithTheme() for: default, midnight, nord, paper, wrapped")
 	fmt.Println("- Use WithColor() for custom primary colors")
 	fmt.Println("- Use WithSize() to control dimensions")
+	fmt.Println("- AreaChart supports smooth curves with tension control")
+	fmt.Println("- ScatterPlot supports various marker types and sizes")
 }
 
 // createSampleHeatmap generates sample heatmap data

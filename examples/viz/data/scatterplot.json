@@ -1,0 +1,17 @@
+{
+  "points": [
+    {"date": "2024-01-01T00:00:00Z", "value": 100, "size": 0, "label": ""},
+    {"date": "2024-01-02T00:00:00Z", "value": 125, "size": 0, "label": ""},
+    {"date": "2024-01-03T00:00:00Z", "value": 115, "size": 0, "label": ""},
+    {"date": "2024-01-04T00:00:00Z", "value": 140, "size": 8, "label": "Peak"},
+    {"date": "2024-01-05T00:00:00Z", "value": 130, "size": 0, "label": ""},
+    {"date": "2024-01-06T00:00:00Z", "value": 155, "size": 0, "label": ""},
+    {"date": "2024-01-07T00:00:00Z", "value": 145, "size": 0, "label": ""},
+    {"date": "2024-01-08T00:00:00Z", "value": 165, "size": 0, "label": ""},
+    {"date": "2024-01-09T00:00:00Z", "value": 160, "size": 0, "label": ""},
+    {"date": "2024-01-10T00:00:00Z", "value": 175, "size": 0, "label": ""}
+  ],
+  "color": "#F59E0B",
+  "markerType": "triangle",
+  "markerSize": 5
+}
