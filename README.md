@@ -27,7 +27,7 @@ A proof of concept for integrating a CSS-based layout engine with terminal UIs i
   - `collapsible.go` - Expandable/collapsible sections
 
 - **examples/**: Demo applications
-  - `demo.go` - Claude Code-like UI demonstration
+  - `demo.go` - Codex CLI-like UI demonstration
 
 ### Design Principles
 
