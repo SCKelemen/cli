@@ -6,7 +6,7 @@ require (
 	github.com/SCKelemen/color v1.0.0
 	github.com/SCKelemen/dataviz v0.1.1
 	github.com/SCKelemen/design-system v1.0.0
-	github.com/SCKelemen/layout v1.1.0
+	github.com/SCKelemen/layout v1.1.1
 	github.com/SCKelemen/text v1.1.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/mattn/go-runewidth v0.0.19
@@ -36,11 +36,3 @@ require (
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/text v0.3.8 // indirect
 )
-
-replace github.com/SCKelemen/layout => ../layout
-
-replace github.com/SCKelemen/text => ../text
-
-replace github.com/SCKelemen/unicode => ../unicode
-
-replace github.com/SCKelemen/wpt-test-gen => ../wpt-test-gen
