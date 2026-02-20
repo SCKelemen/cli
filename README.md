@@ -56,7 +56,7 @@ A proof of concept for integrating a CSS-based layout engine with terminal UIs i
 
 ```bash
 cd examples
-go build -o demo demo.go
+go build -o demo ./cmd/demo
 ./demo
 ```
 
