@@ -5,9 +5,9 @@ go 1.25.4
 require (
 	github.com/SCKelemen/color v1.0.0
 	github.com/SCKelemen/dataviz v0.1.1
-	github.com/SCKelemen/design-system v0.1.0
+	github.com/SCKelemen/design-system v1.0.0
 	github.com/SCKelemen/layout v1.1.0
-	github.com/SCKelemen/text v0.0.0-00010101000000-000000000000
+	github.com/SCKelemen/text v1.1.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/mattn/go-runewidth v0.0.19
 	golang.org/x/term v0.38.0
@@ -15,8 +15,8 @@ require (
 
 require (
 	github.com/SCKelemen/svg v0.1.0 // indirect
-	github.com/SCKelemen/unicode v1.0.1-0.20251225190048-233be2b0d647 // indirect
-	github.com/SCKelemen/units v1.0.2 // indirect
+	github.com/SCKelemen/unicode v1.1.0 // indirect
+	github.com/SCKelemen/units v1.0.3 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
 	github.com/charmbracelet/lipgloss v1.1.0 // indirect
