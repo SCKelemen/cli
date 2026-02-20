@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type flexwrapModel struct {
@@ -111,8 +111,8 @@ func (m flexwrapModel) View() string {
 			{"Card H", "#3498DB", "Pure layout\nengine magic"},
 		}
 
-		cardWidth := 25   // Minimum card width
-		cardHeight := 6   // Fixed card height
+		cardWidth := 25 // Minimum card width
+		cardHeight := 6 // Fixed card height
 
 		for _, card := range cards {
 			cardNode := &layout.Node{

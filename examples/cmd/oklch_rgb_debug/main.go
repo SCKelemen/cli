@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("=== OKLCH to RGB Conversion Test ===\n")
+	fmt.Print("=== OKLCH to RGB Conversion Test ===\n")
 
 	// Test a simple gradient like in oklch_gradients.go
 	fmt.Println("Blue to Red gradient (hue 240 to 30):")
@@ -42,7 +42,7 @@ func main() {
 		fmt.Println()
 	}
 
-	fmt.Println("\n\nRainbow gradient (hue 0 to 360):")
+	fmt.Print("\n\nRainbow gradient (hue 0 to 360):")
 	for i := 0; i < 10; i++ {
 		t := float64(i) / 9.0
 		hue := t * 360

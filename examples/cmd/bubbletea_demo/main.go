@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type model struct {

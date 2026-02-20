@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {

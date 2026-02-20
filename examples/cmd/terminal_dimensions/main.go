@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/SCKelemen/cli/renderer"
+	tea "github.com/charmbracelet/bubbletea"
 	"golang.org/x/term"
 )
 

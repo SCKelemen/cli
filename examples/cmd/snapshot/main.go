@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/SCKelemen/color"
-	"github.com/SCKelemen/layout"
 	"github.com/SCKelemen/cli/components"
 	"github.com/SCKelemen/cli/renderer"
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
 )
 
 func main() {

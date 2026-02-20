@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
@@ -29,18 +29,18 @@ func main() {
 
 	// Show gradients in all supported modes
 	fmt.Println("=== Color Degradation Demo ===")
-	fmt.Println("Showing the same gradient in different color modes:\n")
+	fmt.Print("Showing the same gradient in different color modes:\n")
 
 	// True Color
 	fmt.Println("1. True Color (24-bit) - What the gradient should look like:")
 	showGradient(renderer.ColorModeTrueColor, 70)
 
 	// 256 Color
-	fmt.Println("\n2. 256 Color Mode - Approximation using 256-color palette:")
+	fmt.Print("\n2. 256 Color Mode - Approximation using 256-color palette:")
 	showGradient(renderer.ColorMode256, 70)
 
 	// 16 Color
-	fmt.Println("\n3. 16 Color Mode - Basic ANSI colors:")
+	fmt.Print("\n3. 16 Color Mode - Basic ANSI colors:")
 	showGradient(renderer.ColorMode16, 70)
 
 	// Current terminal
@@ -48,10 +48,10 @@ func main() {
 	showGradient(caps.ColorMode, 70)
 
 	// Color swatches
-	fmt.Println("\n=== Color Palette ===")
+	fmt.Print("\n=== Color Palette ===")
 	showColorSwatches(caps.ColorMode)
 
-	fmt.Println("\n=== Progressive Enhancement ===")
+	fmt.Print("\n=== Progressive Enhancement ===")
 	fmt.Println("✓ Works in all terminals (graceful degradation)")
 	fmt.Println("✓ Better experience in modern terminals")
 	fmt.Println("✓ Falls back to 256 colors, 16 colors, or plain text")
@@ -64,7 +64,7 @@ func main() {
 	}
 
 	// Wait for user
-	fmt.Println("\nPress Enter to exit...")
+	fmt.Print("\nPress Enter to exit...")
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
 

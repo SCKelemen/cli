@@ -5,15 +5,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SCKelemen/color"
-	"github.com/SCKelemen/layout"
 	"github.com/SCKelemen/cli/components"
 	"github.com/SCKelemen/cli/renderer"
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
 )
 
 func main() {
-	fmt.Println("=== Terminal Layout Engine - Animation Demo ===\n")
-	fmt.Println("Demonstrating animated components over 8 frames...\n")
+	fmt.Print("=== Terminal Layout Engine - Animation Demo ===\n")
+	fmt.Print("Demonstrating animated components over 8 frames...\n")
 
 	// Create animated components
 	loading := components.NewLoadingDots()

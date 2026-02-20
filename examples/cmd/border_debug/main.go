@@ -54,7 +54,7 @@ Final regular line`
 	fmt.Print(output)
 
 	// Debug: show what we rendered character by character
-	fmt.Println("\n\nDebug - character positions:")
+	fmt.Print("\n\nDebug - character positions:")
 	lines := screen.Cells
 	for i, line := range lines {
 		fmt.Printf("Line %d (len=%d): ", i, len(line))
@@ -66,6 +66,6 @@ Final regular line`
 		fmt.Println()
 	}
 
-	fmt.Println("\nPress Enter to exit...")
+	fmt.Print("\nPress Enter to exit...")
 	fmt.Scanln()
 }

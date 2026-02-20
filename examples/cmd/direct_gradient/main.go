@@ -12,7 +12,7 @@ func main() {
 	// Clear screen
 	fmt.Print("\033[2J\033[H")
 
-	fmt.Println("=== Direct ANSI Gradient Test ===\n")
+	fmt.Print("=== Direct ANSI Gradient Test ===\n")
 
 	// Test 1: Simple gradient using direct ANSI codes
 	fmt.Println("1. Blue to Red (Direct ANSI):")
@@ -72,19 +72,19 @@ func main() {
 	}
 	fmt.Println()
 
-	fmt.Println("\n=== Terminal Info ===")
+	fmt.Print("\n=== Terminal Info ===")
 	fmt.Printf("TERM=%s\n", os.Getenv("TERM"))
 	fmt.Printf("COLORTERM=%s\n", os.Getenv("COLORTERM"))
 
-	fmt.Println("\n=== Expected Result ===")
+	fmt.Print("\n=== Expected Result ===")
 	fmt.Println("✓ Line 1: Should show smooth blue → purple → red gradient")
 	fmt.Println("✓ Line 2: Should show full rainbow spectrum")
 	fmt.Println("✓ Line 3: Should show gradient in two rows")
 
-	fmt.Println("\nIf you see solid colors (not gradients), your terminal")
+	fmt.Print("\nIf you see solid colors (not gradients), your terminal")
 	fmt.Println("may not support 24-bit true color.")
 
 	// Wait for user
-	fmt.Println("\nPress Enter to exit...")
+	fmt.Print("\nPress Enter to exit...")
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }

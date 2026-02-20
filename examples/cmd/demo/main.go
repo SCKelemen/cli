@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/SCKelemen/color"
-	"github.com/SCKelemen/layout"
 	"github.com/SCKelemen/cli/components"
 	"github.com/SCKelemen/cli/renderer"
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 // tickMsg is sent on every animation frame
@@ -17,15 +17,15 @@ type tickMsg time.Time
 
 // Model represents the application state
 type Model struct {
-	width      int
-	height     int
-	screen     *renderer.Screen
-	loading    *components.LoadingDots
-	spinner    *components.SpinnerDots
-	progress   *components.ProgressBar
-	section1   *components.Collapsible
-	section2   *components.Collapsible
-	quitting   bool
+	width    int
+	height   int
+	screen   *renderer.Screen
+	loading  *components.LoadingDots
+	spinner  *components.SpinnerDots
+	progress *components.ProgressBar
+	section1 *components.Collapsible
+	section2 *components.Collapsible
+	quitting bool
 }
 
 // NewModel creates a new model

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
@@ -109,7 +109,7 @@ func main() {
 	fmt.Printf("Footer: %v (expected height: 3)\n", footer.Rect)
 
 	// Render to see what it looks like
-	fmt.Println("\n=== Rendered Output ===")
+	fmt.Print("\n=== Rendered Output ===")
 	screen := renderer.NewScreen(width, height)
 	screen.Render(rootStyled)
 	fmt.Print(screen.String())

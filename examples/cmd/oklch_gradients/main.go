@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 
 	fmt.Println("╔═══════════════════════════════════════════════════════════════════════════╗")
 	fmt.Println("║               OKLCH Color Gradients - Terminal Showcase                  ║")
-	fmt.Println("╚═══════════════════════════════════════════════════════════════════════════╝\n")
+	fmt.Print("╚═══════════════════════════════════════════════════════════════════════════╝\n")
 
 	// Rainbow Hue Gradient
 	fmt.Println("1. Hue Rotation (0° → 360°) - Full Color Wheel:")
@@ -87,13 +87,13 @@ func main() {
 	fmt.Println()
 
 	// Color Swatches
-	fmt.Println("\n8. Color Palette (Perceptually Uniform):")
+	fmt.Print("\n8. Color Palette (Perceptually Uniform):")
 	printColorSwatches()
 
-	fmt.Println("\n" + renderColorInfo())
+	fmt.Print("\n" + renderColorInfo())
 
 	// Wait for user
-	fmt.Println("\nPress Enter to exit...")
+	fmt.Print("\nPress Enter to exit...")
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
 
@@ -171,7 +171,7 @@ func printColorSwatches() {
 	}
 	rootStyled := renderer.NewStyledNode(root, nil)
 
-	swatchWidth := 10  // Width 10 allows 8 content columns (fits " Magenta")
+	swatchWidth := 10 // Width 10 allows 8 content columns (fits " Magenta")
 
 	for _, swatch := range swatches {
 		c, _ := color.ParseColor(swatch.oklch)
@@ -182,7 +182,7 @@ func printColorSwatches() {
 				Display: layout.DisplayBlock,
 				Width:   layout.Px(float64(swatchWidth)),
 				Height:  layout.Px(4),
-				Margin:  layout.Spacing{Top: layout.Px(0), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)},  // No margins, boxes are adjacent
+				Margin:  layout.Spacing{Top: layout.Px(0), Right: layout.Px(0), Bottom: layout.Px(0), Left: layout.Px(0)}, // No margins, boxes are adjacent
 			},
 		}
 		swatchStyle := &renderer.Style{

@@ -5,9 +5,9 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	// Calculate what the heights should be
-	fmt.Println("\n=== Expected Heights ===")
+	fmt.Print("\n=== Expected Heights ===")
 	fmt.Println("Root: 100x30")
 	fmt.Println("With padding (1,2,1,2), content area: 96x28")
 	fmt.Println("Header: 96x3 + margin 1 = 4 lines")

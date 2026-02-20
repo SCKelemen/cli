@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
+	tea "github.com/charmbracelet/bubbletea"
 	"golang.org/x/term"
 )
 
@@ -39,12 +39,12 @@ func initialModel() model {
 	}
 
 	return model{
-		width:      w,
-		height:     h,
-		cpuUsage:   45.2,
-		memUsage:   68.5,
-		diskUsage:  82.1,
-		netUsage:   23.7,
+		width:     w,
+		height:    h,
+		cpuUsage:  45.2,
+		memUsage:  68.5,
+		diskUsage: 82.1,
+		netUsage:  23.7,
 		activities: []string{
 			"System started successfully",
 			"Network connection established",

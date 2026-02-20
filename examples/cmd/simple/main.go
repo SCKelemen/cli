@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/SCKelemen/color"
-	"github.com/SCKelemen/layout"
 	"github.com/SCKelemen/cli/components"
 	"github.com/SCKelemen/cli/renderer"
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
 )
 
 func main() {
@@ -90,7 +90,7 @@ func main() {
 			root.Children[0].Rect.Width, root.Children[0].Rect.Height)
 	}
 
-	fmt.Println("\n--- Rendered Output ---\n")
+	fmt.Print("\n--- Rendered Output ---\n")
 
 	// Render to screen
 	screen.Render(rootStyled)

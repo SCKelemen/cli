@@ -3,23 +3,23 @@ package main
 import (
 	"fmt"
 
-	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/cli/renderer"
+	"github.com/SCKelemen/color"
 )
 
 func main() {
-	fmt.Println("=== Color Conversion Debug ===\n")
+	fmt.Print("=== Color Conversion Debug ===\n")
 
 	// Test OKLCH color conversion
 	oklchColors := []string{
-		"oklch(0.55 0.22 30)",   // Red
-		"oklch(0.65 0.20 60)",   // Orange
-		"oklch(0.80 0.15 90)",   // Yellow
-		"oklch(0.60 0.18 140)",  // Green
-		"oklch(0.70 0.15 200)",  // Cyan
-		"oklch(0.50 0.20 260)",  // Blue
-		"oklch(0.55 0.20 300)",  // Purple
-		"oklch(0.60 0.25 330)",  // Magenta
+		"oklch(0.55 0.22 30)",  // Red
+		"oklch(0.65 0.20 60)",  // Orange
+		"oklch(0.80 0.15 90)",  // Yellow
+		"oklch(0.60 0.18 140)", // Green
+		"oklch(0.70 0.15 200)", // Cyan
+		"oklch(0.50 0.20 260)", // Blue
+		"oklch(0.55 0.20 300)", // Purple
+		"oklch(0.60 0.25 330)", // Magenta
 	}
 
 	caps := renderer.DetectCapabilities()
@@ -55,6 +55,6 @@ func main() {
 		fmt.Print(ansiRenderer16.RenderStyle(style16))
 		fmt.Print("  SAMPLE  ")
 		fmt.Print(ansiRenderer16.Reset())
-		fmt.Println("\n")
+		fmt.Print("\n")
 	}
 }

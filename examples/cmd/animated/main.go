@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/SCKelemen/color"
-	"github.com/SCKelemen/layout"
 	"github.com/SCKelemen/cli/components"
 	"github.com/SCKelemen/cli/renderer"
+	"github.com/SCKelemen/color"
+	"github.com/SCKelemen/layout"
 )
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 	)
 
 	// Render 10 frames to show animation
-	fmt.Println("=== Animation Test: Showing 10 frames ===\n")
+	fmt.Print("=== Animation Test: Showing 10 frames ===\n")
 
 	for frame := 0; frame < 10; frame++ {
 		fmt.Printf("--- Frame %d ---\n", frame+1)

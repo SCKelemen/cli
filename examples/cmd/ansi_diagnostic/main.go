@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	fmt.Println("=== Direct ANSI Color Test ===\n")
+	fmt.Print("=== Direct ANSI Color Test ===\n")
 
 	// Test 16 basic colors (backgrounds)
 	fmt.Println("16-color ANSI backgrounds:")
@@ -38,13 +38,13 @@ func main() {
 		}
 	}
 
-	fmt.Println("\n\n256-color test (should show gradient):")
+	fmt.Print("\n\n256-color test (should show gradient):")
 	for i := 16; i < 52; i++ {
 		fmt.Printf("\x1b[48;5;%dm  \x1b[0m", i)
 	}
 	fmt.Println()
 
-	fmt.Println("\n\nTruecolor test (should show smooth gradient):")
+	fmt.Print("\n\nTruecolor test (should show smooth gradient):")
 	for i := 0; i < 50; i++ {
 		r := (i * 255) / 50
 		fmt.Printf("\x1b[48;2;%d;0;%dm  \x1b[0m", 255-r, r)

@@ -7,9 +7,9 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 	"golang.org/x/term"
 )
 

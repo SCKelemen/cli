@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
@@ -63,7 +63,7 @@ func main() {
 	fmt.Printf("Footer: %v (expected height: 3)\n", footer1.Rect)
 
 	// Test 2: FlexGrow with MinHeight
-	fmt.Println("\n=== Test 2: FlexGrow with MinHeight ===")
+	fmt.Print("\n=== Test 2: FlexGrow with MinHeight ===")
 	root2 := &layout.Node{
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
@@ -109,7 +109,7 @@ func main() {
 	fmt.Printf("Footer: %v (expected height: 3)\n", footer2.Rect)
 
 	// Test 3: Nested FlexGrow - row with two FlexGrow children
-	fmt.Println("\n=== Test 3: Nested FlexGrow (Row with FlexGrow children) ===")
+	fmt.Print("\n=== Test 3: Nested FlexGrow (Row with FlexGrow children) ===")
 	root3 := &layout.Node{
 		Style: layout.Style{
 			Display:       layout.DisplayFlex,
@@ -155,7 +155,7 @@ func main() {
 	fmt.Printf("Right Panel: %v (expected height: 30)\n", rightPanel.Rect)
 
 	// Now render to see what actually displays
-	fmt.Println("\n=== Rendering Test 2 (with MinHeight) ===")
+	fmt.Print("\n=== Rendering Test 2 (with MinHeight) ===")
 	screen := renderer.NewScreen(width, height)
 
 	rootStyled := renderer.NewStyledNode(root2, nil)

@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
-	fmt.Println("=== OKLCH Color Gradients Demo ===\n")
+	fmt.Print("=== OKLCH Color Gradients Demo ===\n")
 
 	// Terminal dimensions
 	width, height := 100, 45

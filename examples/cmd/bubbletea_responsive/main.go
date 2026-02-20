@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"os"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 const (
-	minWidthTwoColumn = 80  // Minimum width for 2-column layout
+	minWidthTwoColumn   = 80  // Minimum width for 2-column layout
 	minWidthThreeColumn = 120 // Minimum width for 3-column layout
-	minPanelWidth = 30      // Minimum width for each panel
+	minPanelWidth       = 30  // Minimum width for each panel
 )
 
 type responsiveModel struct {

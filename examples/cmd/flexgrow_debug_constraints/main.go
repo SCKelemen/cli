@@ -9,7 +9,7 @@ import (
 func main() {
 	width, height := 100, 30
 
-	fmt.Println("=== Debugging Nested FlexGrow Constraints ===\n")
+	fmt.Print("=== Debugging Nested FlexGrow Constraints ===\n")
 
 	// Create a simple nested structure similar to dashboard
 	root := &layout.Node{
@@ -93,7 +93,7 @@ func main() {
 	fmt.Printf("Footer: %v\n", footer.Rect)
 
 	// Diagnosis
-	fmt.Println("\n=== Diagnosis ===")
+	fmt.Print("\n=== Diagnosis ===")
 	if rowContainer.Rect.Height < 20 {
 		fmt.Println("✗ Row container didn't grow to fill available space")
 	} else {

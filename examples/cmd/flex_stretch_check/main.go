@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
 	width, height := 100, 30
 
-	fmt.Println("=== Test: AlignItems with FlexGrow container ===\n")
+	fmt.Print("=== Test: AlignItems with FlexGrow container ===\n")
 
 	// Test 1: With explicit AlignItems: Stretch
 	root1 := &layout.Node{
@@ -101,7 +101,7 @@ func main() {
 		fmt.Printf("✗ Left panel height is only %v\n", left1.Rect.Height)
 	}
 
-	fmt.Println("\n=== Rendering ===")
+	fmt.Print("\n=== Rendering ===")
 	screen := renderer.NewScreen(width, height)
 	screen.Render(rootStyled1)
 	fmt.Print(screen.String())

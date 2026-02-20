@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
 	"github.com/SCKelemen/layout"
-	"github.com/SCKelemen/cli/renderer"
 )
 
 func main() {
-	fmt.Println("=== OKLCH Gradient Showcase ===\n")
+	fmt.Print("=== OKLCH Gradient Showcase ===\n")
 
 	width, height := 90, 50
 	screen := renderer.NewScreen(width, height)

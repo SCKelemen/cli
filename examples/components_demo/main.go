@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Println("=== DataViz Components Demo ===\n")
+	fmt.Print("=== DataViz Components Demo ===\n")
 
 	// 1. Heatmap Component
 	fmt.Println("1. Heatmap Component:")
@@ -131,8 +131,8 @@ func main() {
 	scatterNode := scatterPlot.ToStyledNode()
 	fmt.Println(scatterNode.Content)
 
-	fmt.Println("\n=== Demo Complete ===")
-	fmt.Println("\nUsage Tips:")
+	fmt.Print("\n=== Demo Complete ===")
+	fmt.Print("\nUsage Tips:")
 	fmt.Println("- All components support fluent builder pattern")
 	fmt.Println("- Use WithTheme() for: default, midnight, nord, paper, wrapped")
 	fmt.Println("- Use WithColor() for custom primary colors")
