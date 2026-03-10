@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/SCKelemen/cli/components"
-	"github.com/SCKelemen/dataviz"
+	dataviz "github.com/SCKelemen/dataviz/charts"
 )
 
 func main() {

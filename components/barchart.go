@@ -3,7 +3,7 @@ package components
 import (
 	"github.com/SCKelemen/cli/renderer"
 	"github.com/SCKelemen/color"
-	"github.com/SCKelemen/dataviz"
+	dataviz "github.com/SCKelemen/dataviz/charts"
 	design "github.com/SCKelemen/design-system"
 	"github.com/SCKelemen/layout"
 )
