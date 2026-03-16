@@ -6,7 +6,7 @@ require (
 	github.com/SCKelemen/color v1.0.5
 	github.com/SCKelemen/dataviz v1.1.4
 	github.com/SCKelemen/design-system v1.0.2
-	github.com/SCKelemen/layout v1.1.3
+	github.com/SCKelemen/layout v1.1.4
 	github.com/SCKelemen/text v1.1.3
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/mattn/go-runewidth v0.0.19
