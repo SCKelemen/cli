@@ -9,7 +9,7 @@ require (
 	github.com/SCKelemen/layout v1.1.3
 	github.com/SCKelemen/text v1.1.3
 	github.com/charmbracelet/bubbletea v1.3.10
-	github.com/mattn/go-runewidth v0.0.19
+	github.com/mattn/go-runewidth v0.0.23
 	golang.org/x/term v0.38.0
 )
 
